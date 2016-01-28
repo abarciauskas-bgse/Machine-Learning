@@ -1,0 +1,121 @@
+---
+title: "Intro to Machine Learning and Binary Classification"
+subtitle: "An aggregation of class notes and Lugosi notes"
+author: "Aimee Barciauskas"
+date: "`r Sys.Date()`"
+output:
+  tufte::tufte_html: default
+  tufte::tufte_handout:
+    citation_package: natbib
+    latex_engine: xelatex
+  tufte::tufte_book:
+    citation_package: natbib
+    latex_engine: xelatex
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+library(tufte)
+knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+```
+
+# Nearest Neighbor
+
+## 1-Nearest Neighbor
+
+Algorithm:
+
+1. Order distances: $d(X_{(1)},x) \leq d(X_{(2)})$
+2. Label by nearest point: $g_{n}(x) = Y_{(1)}(x)$
+
+## Proof of proximity
+
+*Why can we assume the nearest neighbor is close?*
+
+[ADD ME]
+
+## Properties of Nearest Neighbors
+
+* **curse of dimensionality:** As $d$ grows, required points grows exponentially
+* The nearest neighbor is *typically* at a distance at most $cn^{-\frac{1}{2}}$ where $c$ is a constant. Here *typically* indicates that $X$ has a positive and smooth density.
+
+**Theorem:** the risk of the NN classifier is such that, for all distributions of $(X,Y)$:
+
+$$R(g_{n}) \to 2\mathbb{E}[\eta(x)(1-\eta(x))]$$
+
+and
+
+$$R^{*} \leq R^{NN} \leq 2R^{*}$$
+
+In particular if $R^{*} = 0$ then $R^{NN} = 0$
+
+## K-Nearest Neighbor
+
+Let $k \geq 1$ be an odd integer.
+
+Let
+
+$$g_{n}(x) =
+\begin{cases}
+1 \text{ if } \sum Y_{i}(x) > \frac{k}{2}\\
+0 \text{ otherwise}\\
+\end{cases}$$
+
+Why bother?
+
+Suppose $Y ~ Bern(0.9)$ and $Y' ~ Bern(0.9)$. Then, 1-NN risk (?) is $2p(1-p)$
+
+If $Y' = (Y_{1}',...,Y_{k}')$, risk is $\mathbb{E}\mathbb{P}(majority((Y_{1}',...,Y_{k}')) \ne Y|X)$
+
+For example, for 3-NN:
+
+$$\mathbb{P}(majority((Y_{1}',Y_{2}',Y_{3}')) \ne Y) = \eta(1-\eta)^{3} + 3\eta^{2}(1-\eta)^{2} + \eta^{3}(1-\eta) + 3\eta^{2}(1-\eta)^{2}$$
+
+```{marginfigure}
+e.g. first term is probability all of $Y' \ne Y$, second term equivalent to probability 2 of $Y' \ne Y$
+```
+
+This can be reduced to:
+
+$$R^{3-NN} = 4\mathbb{E}[\eta(x)^{2}(1-\eta(x))^{2}]$$
+
+which "is peanuts"
+
+$$R^{k-NN}$$ in the general case [ADD ME]
+
+### Corollaries
+
+$$2R^{*} \geq R^{k-NN} \geq R^{*}$$
+
+```{marginfigure}
+This is all distribution free! :)
+But it is also asymptotic :(
+```
+
+## K as a function of n
+
+One can take $k = k(n)$
+
+Still we have
+
+$$\lVert X_{k(n)} - x \rVert \to 0 \text{ as $n\to\infty$ }$$
+
+if $\frac{k(n)}{n} \to 0$
+
+Moreover, if $k(n) \to \infty$ and $\frac{k(n)}{n} \to 0$, then, for all distributions:
+
+$$R(g_{n}^{k(n)}) \to R^{*} \text{ in probability}$$
+
+```{marginfigure}
+* (LLN?) $k(n) \to \infty$ is important for averaging to work, the variance is small.
+* $\frac{k(n)}{n} \to 0$ implies bias is small
+```
+
+**Thus, the $k(n)-NN$ rule is univisally consistent**
+
+> The real challenge in machine learning is to focus on where the action is. (Gabor)
+
+## Other local averaging rules
+
+[ADD ME]

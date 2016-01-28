@@ -1,0 +1,186 @@
+---
+title: Machine Learning Problemset 1
+author: Aimee Barciauskas
+date: 29 January 2016
+output: pdf_document
+---
+# Problemset 1
+
+### 1. Consider the binary classification problem with a priori probabilities $P\{Y=1\} = P\{Y=0\} = \frac{1}{2}$ and class-conditional densities $f_{0}(x) = f(x|Y = 0)$ and $f_{1}(x) = f(x|Y = 1)$ on $X = \mathbb{R}_{d}$. Prove that the Bayes risk equals:
+
+$$R^{*} = \frac{1}{2} - \frac{1}{4} \int \bigl|f_{1}(x) - f_{0}(x)\bigr| dx$$
+
+We know that:
+
+$$R^{*} = \int min(\eta(x), 1-\eta(x)) dx$$
+$$\eta(x) = (1 - \frac{1}{2})f_{1}(x)$$
+$$1 - \eta(x) = \frac{1}{2}f_{0}(x)$$
+
+Substituting for $\eta(x)$ gives:
+
+$$R^{*} = \int min((1 - \frac{1}{2}) f_{1}(x), \frac{1}{2} f_{0}(x)) dx$$
+$$= \int min(f_{1}(x) - \frac{1}{2}f_{1}(x), \frac{1}{2}f_{0}(x)) dx$$
+$$= \int min(\frac{1}{2}f_{1}(x), \frac{1}{2}f_{0}(x)) dx$$
+$$= \frac{1}{2}\int min(f_{1}(x), f_{0}(x)) dx$$
+
+The minimum of two functions can be expressed:
+
+$$min(f_{1}(x), f_{0}(x)) = \frac{1}{2}[f_{1}(x) + f_{0}(x) - \bigl|f_{1}(x) - f_{0}(x)\bigr|]$$
+
+Substituting this equality:
+
+$$R^{*} = \frac{1}{2} \int \frac{1}{2}[f_{1}(x) + f_{0}(x) - \bigl|f_{1}(x) - f_{0}(x)\bigr|] dx$$
+
+$$= \frac{1}{4} \bigg[ \int f_{1}(x) dx + \int f_{0}(x) dx - \int \bigl| f_{1}(x) - f_{0}(x) \bigr| dx\bigg]$$
+
+Since $f_{0}(x)$ and $f_{1}(x)$ are probability density functions, the first two terms integrate to 1, so the above can be reduced to:
+
+$$= \frac{1}{2} - \frac{1}{4} \int \bigl|f_{1}(x) - f_{0}(x)\bigr| dx$$
+
+### 2. Consider a binary classification problem in which both class-conditional densities are multivariate normal of the form
+
+$$ f_{i}(x) = \frac{1}{\sqrt{2\pi det(\Sigma_{i})}} e^{-\frac{1}{2}(x-m_{i})^{T}\Sigma_{i}^{-1}(x-m_{i})}$$
+
+**where $m_{i} = \mathbb{E}[X|Y = i]$ and $\Sigma_{i}$ is the covariance matrix for class i. Let $q_{0} = P\{Y=0\}$ and $q_{1} = P\{Y=1\}$ be the a priori probabilities. Determine the Bayes classifier. Characterize the cases when the Bayes decision is linear (i.e., it is obtained by thresholding a linear function of x).**
+
+The Bayes classifier is given by
+
+$$g^{*} =
+\begin{cases}
+1 \text{ if } q_{1}f_{1}(x) > q_{0}f_{0}(x)\\
+0 \text{ otherwise}\\
+\end{cases}$$
+
+To determine when $q_{1}f_{1}(x) > q_{0}f_{0}(x)$, take the log of both sides to facilitate an easier equality and reduce to determine when:
+
+$$2\big[ log(\frac{q_{1}}{\sqrt{2\pi det(\Sigma_{1})}}) - (x-m_{1})^{T} \Sigma_{1}^{-1} (x-m_{1}) \big] > 2\big[ log(\frac{q_{0}}{\sqrt{2\pi det(\Sigma_{0})}}) - (x-m_{0})^{T} \Sigma_{0}^{-1} (x-m_{0}) \big]$$
+
+Which can be further reduced to:
+
+$$2log(q_{1}) - log(det\Sigma_{1}) - (x - m_{1})^{T}\Sigma_{1}^{-1}(x-m_{1}) > 2log(q_{0}) - log(det\Sigma_{0}) - (x - m_{1})^{T}\Sigma_{0}^{-1}(x-m_{1})$$
+
+We can simplify this expression using the following:
+
+$$r_{i}^{2} = (x-m_{i})^{T}\Sigma_{i}^{-1}(x-m_{i}) \textit{ (i.e. the Mahalnoblis distance) }$$
+
+and we get the Bayes classifier is reduced to:
+
+$$g^{*} =
+\begin{cases}
+1 \text{ if } r_{1}^{2} > r_{0}^{2} + 2log(\frac{q_{1}}{1-q_{1}}) + log(\frac{det\Sigma_{0}}{det\Sigma_{1}})\\
+0 \text{ otherwise}\\
+\end{cases}$$
+
+When $\Sigma_{1} = \Sigma_{0} = \Sigma$, the last term is 0:
+
+$$g^{*} =
+\begin{cases}
+1 \text{ if } r_{1}^{2} > r_{0}^{2} + 2log(\frac{q_{1}}{1-q_{1}})\\
+0 \text{ otherwise}\\
+\end{cases}$$
+
+This inequality is linear in $x$, so the classification rule is linear.
+
+### 3. Let $(X, Y)$ be a pair of random variables taking values in $X \times \mathbb{R}$ and consider a prediction problem in which one desires to guess the value of $Y$ upon observing $X$. Suppose that the loss function is $\ell(y, y') = (y - y')^{2}$. Determine the predictor function $f : X \to \mathbb{R}$ that minimizes the expected loss $E(f(X), Y)$.
+
+The expected loss can be expressed as:
+
+$$\mathbb{E} \ell(y,y') = \int \ell(y,y') p(y|x) dy$$
+$$= \int (y-y')^{2} p(y|x) dy$$
+
+Where $p(y|x)$ is the conditional distribution of $y$ on $x$.
+
+To determine the predictor function that minimizes the expected loss, we can take the derivative of the expected loss with respect to $y'$, set to 0 and solve for $y'$:
+
+$$0 = \frac{\partial}{\partial y'}\int (y-y')^{2} p(y|x) dy$$
+$$= \int \frac{\partial}{\partial y'} \bigg[(y-y')^{2} p(y|x)\bigg] dy$$
+$$= \int 2(y-y') p(y|x) dy$$
+$$= 2y'\int p(y|x) dy - 2\int y p(y|x) dy$$
+$$0 = y' - \int y p(y|x) dy$$
+
+The second term is equivalent the expected value of $y$ at $x$, thus:
+
+$$y' = \mathbb{E} \big[Y|X=x\big]$$
+
+The predictor function which minimizes the expected loss function is the expected value of $Y$ at $X=x$, in other words the mean of $Y$ at $x$.
+
+### 4. Repeat the previous problem but with $\ell(y, y') = |y - y'|$. You may assume that for each $x \in X$, the conditional distribution of $Y$, given $X = x$, has a density $\phi(y|x)$.
+
+Similar to 3, we can estimate the expected loss in the following way:
+
+$$\mathbb{E} \ell(y,y') = \int \left|y-y'\right| \phi(y|x) dy$$
+$$= \int_{y'}^{-\infty} (y-y') \phi(y|x) dy + \int_{-\infty}^{y'} (y'-y) \phi(y|x) dy$$
+
+To find the best prediction function, we minimize the expected loss by taking the derivative, setting to 0 and solving for $y'$:
+
+$$0 = \frac{\partial}{\partial y'} \int_{y'}^{-\infty} (y-y') \phi(y|x) dy + \frac{\partial}{\partial y'} \int_{-\infty}^{y'} (y'-y) \phi(y|x) dy$$
+$$= \int_{y'}^{\infty} -\phi(y|x) dy + \int_{-\infty}^{y'} \phi(y|x) dy$$
+$$\int_{y'}^{\infty} \phi(y|x) dy = \int_{-\infty}^{y'} \phi(y|x) dy$$
+
+The above is equivalent to the probability densities:
+
+$$\mathbb{P}(Y \leq y'|x) = \mathbb{P}(Y \geq y'|x)$$
+
+Thus the best predictor function is the $y'$ where these probabilities are equivalent. These are equal at the median of $Y$ at $X=x$.
+
+### 5. Let $X, X_{1},..., X_{n}$ be i.i.d. random vectors, uniformly distributed on $[0, 1]^{d}$. Let $k$ be a fixed positive integer and let $X_{(k)}$ denote the k-th nearest neighbor of $X$ among $X_{1}, ..., X_{n}$. (We assume $n \geq k$.) Prove that:
+
+$$\lim_{n\to\infty} \| X_{(k)} - X \| = 0 \text{ in probability. }$$
+
+$b_{d}$ is the unit sphere centered at $x$, with radius $\epsilon$. The distance of the k nearest neighbors from $x$ can only be greater than the radius of the ball centered at $x$ when there are less than $k$ $X_{i}$ in the sphere centered at $x$.
+
+$$\mathbb{P}\{\|X_{k}(x) - X\| > \epsilon\} = 1 - b_{d}\epsilon^{d}$$
+
+which is certainly less than:
+
+$$\mathbb{P}\{\|X_{k}(x) - X\| > \epsilon \} \leq 1 - \frac{b_{d}}{2^{d}}\epsilon^{d}$$
+
+To simplify we set $c_{d} = \frac{b_{d}}{2^{d}}$:
+
+$$\mathbb{P}\{\|X_{k}(x) - X\| > \epsilon \} \leq (1 - c_{d}\epsilon^{d})^{n}$$
+
+Using the inequality $1+x \leq e^{x}$:
+
+$$\mathbb{P}\{\|X_{k}(x) - X\| > \epsilon\} \leq e^{-n c_{d} \epsilon^{d}}$$
+
+As $n$ goes to $\infty$ this term goes to 0 and
+
+$$\|X_{k}(x) - X \| = 0 \to 1$$ in probability.
+
+### 6. Show that for any sample size n there exists a distribution of $(X, Y)$ such that $R^{*} = 0$ but the expected risk of the 1-nearest neighbor classifier is greater than $\frac{1}{4}$.
+
+As described in Theorem 7.1 of *A Probabilistic Theory of Pattern Recognition*, the lower bound for the expected risk of any classifier can be determined by the supremum of the risk for the binary expansion of a uniform random variable $b \in [0,1)$ which parameterizations any given distribution of $(X,Y)$ as follows:
+
+For any distribution $(X,Y)$, $X$ is defined on the set of positive integers from $\{1,...,K\}$ where $K$ is an arbitrarily large number to be decided later, such that:
+
+$$p_{i} = \mathbb{P}(X = i)
+\begin{cases}
+\frac{1}{K} \text{ for } i = {1,...,K}\\
+0 \text{ otherwise}\\
+\end{cases}$$
+
+A lower bound for the expectation of the error of any given decision rule $g_{n}(X)$ conditional on the observed distribution of data $D_{n}$ is $\mathbb{E}[L_{n}] = R_{n}(b)$. $b$ is uniformly distributed $[0,1)$ and acts as a parameter of the distribution of $(X,Y)$ such that it determines the distribution of $Y$ as the binary expansion of $b$ and $b_{X} = Y$. There exists a $b$ such the risk of the decision rule $g_{n}$ is at a maximum.
+
+The expected value of the risk $R_{n}(B)$ must be less than or equal to the maximum risk $R_{n}(b)$.
+
+$$sup_{b \in [0,1)}R_{n}(b) \leq \mathbb{E}\{R_{n}(B)\}$$
+
+The expected value of this random variable, $\mathbb{E}\{R_{n}(B)\}$ is a lower bound for the expected risk of any given decision rule.
+
+$$\mathbb{E}\{(R_{n}(B))\} = \mathbb{P}\{(g_{n}(X,D_{n})) \ne Y\}$$
+$$ = \mathbb{P}\{(g_{n}(X,D_{n})) \ne B_{X}\}$$
+
+When $g_{n}$ is the 1-nearest neighbor rule this becomes
+
+$$ = \mathbb{P}\{(g_{n}(X,D_{n})) \ne B_{X'}\}$$
+
+Where $B_{X'}$ is the nearest neighbor of $B_{X}$ when trying to classify $X$
+
+$$ = \mathbb{P}\{B_{X'} \ne Y\}$$
+
+$$ \geq \frac{1}{2}\mathbb{P}\{B_{X'} \ne B_{X}\}^{n}$$
+$$ \geq (1 - \frac{1}{K})^{n}$$
+
+This is $\frac{1}{2}$ as $K \to \infty$. In other words, as the space on which $X$ is defined $\{1,...,K\}$ grows, the lower bound for the expected risk for any decision rule is $\frac{1}{2} - \epsilon$ where $\epsilon$ is a small number.
+
+
