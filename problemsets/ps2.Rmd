@@ -38,32 +38,34 @@ $$R_{3-NN} = \frac{3}{10}$$
 
 ## 8. Let $X_{1},...,X_{n}$ be independent random variables taking values in $[0,1]$. Denote $m = \mathbb{E}_{i=1}{n} X_{i}$. Prove that for any t: $$\mathbb{P}\Bigg\{ \sum_{i=1}^{n} X_{i} \geq t \Bigg\} \leq \bigg(\frac{m}{t}^\bigg)^{t} e^{t-m}$$ *Hint:* Use Chernoff’s bounding technique. Use the fact that by convexity of $e^{\lambda x}, e^{\lambda x} \leq xe^{\lambda} + (1-x)$
 
-For simplicity in using Chernoff's bounding methods we define $X = \sum_{i=1}^{n} X_{i}$ and $t = m + \eta$, so the proof becomes:
+Start with the equality:
 
-$$\mathbb{P} \Bigg[ X \geq m + \eta \Bigg] \leq \bigg(\frac{m}{t}^\bigg)^{t} e^{t-m}$$
+$$\mathbb{P}\{X \geq t\} = \mathbb{P}\{e^{\lambda X} \geq e^{\lambda t}\}$$
 
-$$\mathbb{P} \Bigg[ X \geq m + \eta \Bigg] = \mathbb{P} \Bigg[ s^{X} geq s^{m + \eta} \Bigg]$$
+Using Chrenoff, we know this probability is less than or equal to:
 
-Using Chernoff's bound:
+$$\leq \frac{\mathbb{E}\[e^{\lambda X}\]}{e^{\lambda t}}$$
 
-$$\leq \frac{\mathbb{E}s^{X}}{s^{m + \eta}}$$
+We can set $\lambda = log(\frac{t}{m})$ because $t \geq m$ this will always be positive.
 
-Because the $X_{i}$ are independent:
+$$= \frac{\mathbb{E}\[e^{\lambda X}\]}{(\frac{t}{m})^{t}}$$
 
-$$= s^{-m-\eta} \prod_{i=1}{n} \mathbb{E}\[s^{X_{i}}\]$$
+$$= (\frac{m}{t})^{t} \mathbb{E}\[e^{\lambda X}\]$$
 
-We simplify the second term by properties of convexity:
+Using the hint $e^{\lambda x}, e^{\lambda x} \leq xe^{\lambda} + (1-x)$:
 
-$$\prod_{i=1}{n} \mathbb{E}\[s^{X_{i}}\] \leq \prod_{i=1}{n} \bigg( 1 + (s-1)\mathbb{E} X_{i} \bigg)$$
+$$\leq (\frac{m}{t})^{t} \mathbb{E}\[Xe^{\lambda} + 1 - X\]$$
 
-and AM-GM:
+$$= (\frac{m}{t})^{t} \[m e^{\lambda} + 1 - m\]$$
 
-$$ \Bigg( \frac{1}{n} \sum_{i=1}{n} \bigg(1 + (s-1)\mathbb{E} X_{i} \bigg) \Bigg)^{n}$$
-$$= \Bigg(1 + (s - 1)\frac{m}{n}^{n} \Bigg)$$
+Substitute lambda:
 
-Now the full LHS takes the form:
+$$= (\frac{m}{t})^{t} \[t - m + 1\]$$
 
-$$s^{-m-\eta} \prod_{i=1}{n} \mathbb{E}\[s^{X_{i}}\] = s^{-m-\eta}\Bigg(1 + (s - 1)\frac{m}{n}^{n} \Bigg)$$
+The second term is always less than $e^{t-m}$:
+
+$$\leq (\frac{m}{t})^{t} e^{t-m}$$
+
 
 ## 9. Let $R_{k-NN}$ denote the asymptotic risk of the k-nearest neighbor classifier, where k is an odd positive integer. Use the expression of $R_{k-NN}$ found in class to show that:
 
