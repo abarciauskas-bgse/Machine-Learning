@@ -1,0 +1,224 @@
+---
+title: 
+author: Aimee Barciauskas
+output: pdf_document
+date: 4 February 2016
+---
+
+# Summarize what we've done so far:
+
+Let $\mathcal{C}$ be a class of classifieres $g: \mathcal{X} \to {0,1}$
+
+$$(X_{1},Y_{1}), ... ,(X_{n},Y_{n})$$ and we select a classification from the class $g_{n}$
+
+Define Empirical Risk $R_{n}(g)$
+
+Define "True" Risk $R(g)$
+
+if $g_{n} = argmin_{g\in\mathcal{C}} R_{n}(g)$ is the empirical risk minimizer
+
+then:
+
+**Overfitting Error**
+
+$$R(g_{n}) - R_{n}(g_{n}) \leq sup_{g \in \mathcal{C}} |R_{n}(g) - R(g)|$$
+
+**Excess Risk**
+
+$$R(g_{n}) - inf_{g \in \mathcal{C}}R(g) \leq 2sup_{g \in \mathcal{C}} |R_{n}(g) - R(g)|$$
+
+-----------
+
+**VC Inequality**
+
+*Bounding by Rademacher complexity*
+
+$$\mathbb{E} sup_{g\in\mathbb{C}} | R(g) - R_{n}(g)| \leq 2\mathbb{E}\rho_{n}(e)$$
+
+$\rho$ is the Rademacher average
+
+This quantity is a very complicated function of the data - we must define an upper bound ebecause we don't know the true risk. There are 2^n ways of calculating the rademacher average. Finding the maximum is still a very complicated task, but is a data-dependent quantity so we can calculate it.
+
+Knowing something about the expected value of the rademacher average enables us to upperbound the difference between the true risk and the empirical risk
+
+Sigma is like the correlation between classification and a random sequance. If we are able to fit the random coin flips very well, than the class is too large (overfitting). We are able to fit noise to our data. If this is large we can expect overfitting.
+
+We can further bound this inequality using the bounded differences inequaltiy and with probability $1-\delta$ this difference is less than or equal to the extra term below:
+
+$$2\mathbb{E}\rho \leq 2(\rho_{n}(\mathbb{C}) + sqrt(\frac{log(2/\delta)}{2n}))$$
+
+*How did we upper bound the rademacher average?*
+
+$$\leq 2\matbb{E} sqrt(\frac{2log(S(D_{n},\mathcal{C}))}{n})$$
+
+**Shatter coefficient:** The number of different ways the n datapoints can be classified by classifiers in $\mathcal{C}$
+
+Above, $S(D_{n},\mathcal{C})$ is for the data, which is less than the max shatter coefficient for any $n$.
+
+$$S(D_{n},\mathcal{C}) \leq (n+1)^{V_{C}}$$
+
+The VC-dimension is the largest integer such that it can be shattered by our class $S_{C}(V_{C}) = 2^{V_{C}}$
+
+We can control either the excess risk or the overfitting error (sometimes called a generalization error)
+
+Either error can be upperbounded by the rademacher, vc dimension or the shatter coefficient.
+
+The advantage of the rademacher average is that we can actually estimate it.
+
+--------
+
+
+**Theorem** Let phi1,...,phir : X \to R and consider the class of sets that take that form some linear combination of them:
+
+$$\{\{x \in \mathcal{X} : \sum a_{i}\phi_{i}(x) \geq 0 \} : a_{1},...,a_{r} \in \mathbb{R} \}$$
+
+Look at wether this linear combination is negative or positive, where coefficients take all the possible values
+
+The linear span of these functions, then the VC dimension of this class cannot be larger than r
+
+$$V_{\mathcal{A}} \leq r$$
+
+Algebraic dimension bounds the VC dimension
+
+*Proof*
+
+Let $m = r+1$
+
+What does it mean that the VC dimension is at most r? the largest integer such that we can shatter is less than or equal to r points
+
+It suffices to prove that there is no set of m points that can be shattered by $A$ there is always a subset of points that cannot be shattered by this class
+
+Fix m points in the features space $x_{1},...,x_{m} \in \mathcal{X}$ 
+
+Define the linear function L : R^m-1 \to R^m by (a linear mapping):
+
+$$L(a_{1},...,a_{n}) = \sum^{r} a_{i}\phi_{i}(x_{1}, ..., \sum ??$$
+
+The image of this function $L$ is contained in an (at most) m-1 dimensional subspace.
+
+There exists a non-zero gamma in R^{m} orthogonal to the image of L
+
+*What does that mean?*
+
+No matter what $a_{1} and a_{r}$ are, for all $a$ the inner product of gamma and this vector is 0.
+
+$$gamma vector x L = 0$$
+
+for all possible $a_{i}$ basic principals of linear algebra.
+
+May assume at least one component of gamma is negative.
+
+Rearranging with negative components on the other side of the equality, we get the sum over all i's such that gamma j is not negative, gamma j x the sum 
+
+$$\sum_{j \geq 0} \gamma_{j} \sum^{r} a_{i}\phi_{i}(x_{j}) = -\sum_{j} \gamma_{j < 0} \sum^{r} a_{i}\phi_{i}(x_{j})$$
+
+Suppose that a1, ...,, am such that x is in the {sum ai phi i x geq 0} contains exactly these x_{j}'s
+
+The LHS is strictly negative, the RHS is not-strictly positive. This is a contradiction. No such a1,...,ar coefficients can exists, which means we have found a subset of these points that cannot be picked out. VC dimension must be strictly less than m.
+
+For each a we get a class of sets, r is the number of basis functions (an r dimension things) there must be a subset that cannot be picked out there is no configuration of these
+
+### Examples
+
+**Let's look at the class of linear half-spaces.**
+
+$$\mathcal{A} = \{ x : x^{T}w \leq 0} : w \in \mathcal{R}^{d} \}$$, $w$ non-zero
+
+Take all possible $w$ vectors. Define $\mathcal{A}$ as this infinite set.
+
+The vc dimension of this class A is at most d $V_{\mathcal{A}} \leq d$
+
+*Proof* Use the theorem with $\phi_{1}(x) = x^{1}, \phi_{2}(x) = x^{2}, ..., \phi(d)(x) = x^{d}$
+
+In fact you can prove that the vc dimension equals d.
+
+**Class of affine half-spaces**
+
+Now we're looking at:
+
+$$\mathcal{A} = \{ x \in \mathbb{R}^{d} : x^{T}w + b \leq 0} : w \in \mathcal{R}^{d}, b \in \mathcal{R} \}$$
+
+*Proof* Use the theorem with $\phi_{1}(x) = x^{1}, \phi_{2}(x) = x^{2}, ..., \phi(d)(x) = x^{d}, \phi_{d+1}(x) = 1$
+
+$$V_{\mathcal{A}} \leq d + 1$$ (and in fact it is an equality (you can shatter d+1 points)).
+
+**The class of all closed balls**
+
+A closed ball is:
+
+$$\mathcal{A} = \{\{ x \in \mathbb{R}^{d} : | x - a |^{2} \leq r^{2} \}: a \in \mathbb{R}^{d}, r \geq 0 \}$$
+
+If we expand, the VC dimension for the set of closed balls is at most $d + 2$
+
+In fact, it's d + 1 but this is not so easy to prove.
+
+E.g. Can be written as a linear combination of d + 2 functions. (norm of x - sum over d x^{i}a_{i} + norm of a)
+
+**Class of elipsoids in $\mathbb{R}^{d}$**
+
+$$\mathcal{A} = \{\{x^{T}Ax + b \leq 0\} : A, b\}$$
+
+These ellipsoids are centered at 0 (if you subtract m from the x vector, then we get another class of sets)
+
+Parameters A, m, b
+
+x^{T} A x, sum over all i's and j's suffices to take all i leq j
+
+$$V_{\mathbb{A} \leq \frac{d(d-1)}{2} + d + 1$$
+
+In fact, again, this is sharp
+
+**Combinations of linear classifiers (NN)**
+
+*Some structural bounds for shatter coefficients:*
+
+If we have a class of sets if we obtain by taking 2 different classes of sets. All balls and all rectangles for example. The union of this class...
+
+* $$\mathcal{A} = \mathcal{A}_{1} \cup \mathcal{A}_{2}$$, then $s_{A}(n) \leq s_{A_{1}}(n) + s_{A_{2}}(n)$
+
+* $$\mathcal{A} = \{A^{c} : A \in \mathcal{A}\}$$, then $s_{\mathcal{A_{c}}}(n) = s_{\mathcal{A}}(n)$
+
+* If A is the intersection of B and C, e.g. any set that can be written as the intersection of 2 balls, or two half-spaces, the class of all these sets. The shatter coefficient of this new class can never be larger than the product of the shatter coefficients of B and C.
+
+* The above is true also for the union of B and C
+
+* And I can even take the cartesian product
+
+
+### Structural Risk Minimization!
+
+Recall that if $g_{n}$ is the empirical risk minimizer in a class $\mathcal{C}$ then we can bound the risk of g when comp
+
+$$R(g_{n}) - min_{g \in \mathcal{C} R(g)} \leq \frac{4 sqrt(2Vlog(n+1))}{n}$$ (or in terms of Rademacher complexity)
+
+This controls how rich the class is, overfitting may occur otherwise.
+
+This means we should work with small classes? Maybe not, even the best classifier will be bad. There is a tradeoff.
+
+Bias-variance tradeoff.
+
+A small class allows us to control the overfitting, but may not provide a good classifier. What we're really interested in is not this difference, but the empirical risk. Or the difference between the expected risk of the empirical classifier and the bayes risk
+
+$$R(g_{n}) - R^{*} = (R(g_{n}) - min_{g \in \mathcal{C}}R(g)) + (min_{g \in \mathcal{C}}R(g) - R^{*})$$
+
+$$R(g_{n}) - min_{g \in \mathcal{C}}R(g) \text { is the estimation error }$$
+
+$$min_{g \in \mathcal{C}}R(g) - R^{*} \text { is the approximation error }$$
+
+We don't really have control over the approximation error, so we try to control the estimation error. That's what we call structural risk minimization.
+
+**The big question here is how does one choose the class $\mathbb{C}$?**
+
+That's one reason people use linear classifiers, because we can control the risk.
+
+How can we chose $\mathcal{C}$ in a smart way when all we have is our data.
+
+Suppose we have a sequence of classes we can chose from. And let's say they are nested. This is not strictly necessary but makes it easier to think about.
+
+Harder and harder to control over fitting. Empirical risk minimizer will get smaller and smaller. Eventually I will get 0 training error, but... SUSPENSE.
+
+
+
+
+
+

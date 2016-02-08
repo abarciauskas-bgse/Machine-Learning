@@ -1,0 +1,162 @@
+---
+title: Machine Learning Problemset 2
+author: Aimee Barciauskas
+date: 12 February 2016
+output: pdf_document
+---
+
+## 7. Let the joint distribution of $(X, Y)$ be such that $X$ is uniform on the interval [0, 1], and for all $x \in [0,1], \eta(x) = x$. Determine the prior probabilities $\mathbb{P}\{Y = 0\},\mathbb{P}\{Y = 1\}$ and the class-conditional densities $f(x|Y = 0)$ and $f(x|Y = 1)$. Calculate $R^{*}, R_{1-NN}, R_{3-NN}$ (i.e., the Bayes risk and the asymptotic risk of the 1-, and 3-nearest neighbor rules).
+
+**$R^{*}$**
+
+$$R^{*} = \int_{0}^{\frac{1}{2}}\eta(x)dx + \int_{\frac{1}{2}}^{2}(1-\eta(x))dx$$
+
+$$=\frac{x^{2}}{2}\Big|_{0}^{\frac{1}{2}} + [x - \frac{x^{2}{2}}]\Big|_{\frac{1}{2}}^{1} = \frac{1}{4}$$
+
+**$R_{1-NN}$**
+
+*From in-class calculation:*
+
+$$R_{1-NN} = \eta(x)(1-\eta(x)) + (1-\eta(x)\eta(x)$$
+$$= 2\eta(x)(1-\eta(x))$$
+$$= \int \[2\eta(x)(1-\eta(x))\] dx$$
+
+Substitute $x = \eta(x)$:
+
+$$= 2\int x(1-x) dx$$
+$$= 2\[\frac{1}{2}x^{2} - \frac{1}{3}x^{3}/] \Big|_0^1$$
+$$R_{1-NN} = \frac{1}{3}$$
+
+From in-class calculation we know:
+
+$$R_{3-NN} = \mathbb{E}\[\eta(x)(1-\eta(x))\] + 4 \mathbb{E}\[\eta(x)^{2}(1-\eta(x))^{2}\]$$
+
+Following similar steps from $R_{1-NN}$ we get:
+
+$$= \frac{1}{2}x^{2} + \frac{3}{3}x^{3} - \frac{8}{4}x^{4} + \frac{4}{5}x^{5} \Big|_0^1$$
+$$R_{3-NN} = \frac{3}{10}$$
+
+## 8. Let $X_{1},...,X_{n}$ be independent random variables taking values in $[0,1]$. Denote $m = \mathbb{E}_{i=1}{n} X_{i}$. Prove that for any t: $$\mathbb{P}\Bigg\{ \sum_{i=1}^{n} X_{i} \geq t \Bigg\} \leq \bigg(\frac{m}{t}^\bigg)^{t} e^{t-m}$$ *Hint:* Use Chernoff’s bounding technique. Use the fact that by convexity of $e^{\lambda x}, e^{\lambda x} \leq xe^{\lambda} + (1-x)$
+
+For simplicity in using Chernoff's bounding methods we define $X = \sum_{i=1}^{n} X_{i}$ and $t = m + \eta$, so the proof becomes:
+
+$$\mathbb{P} \Bigg[ X \geq m + \eta \Bigg] \leq \bigg(\frac{m}{t}^\bigg)^{t} e^{t-m}$$
+
+$$\mathbb{P} \Bigg[ X \geq m + \eta \Bigg] = \mathbb{P} \Bigg[ s^{X} geq s^{m + \eta} \Bigg]$$
+
+Using Chernoff's bound:
+
+$$\leq \frac{\mathbb{E}s^{X}}{s^{m + \eta}}$$
+
+Because the $X_{i}$ are independent:
+
+$$= s^{-m-\eta} \prod_{i=1}{n} \mathbb{E}\[s^{X_{i}}\]$$
+
+We simplify the second term by properties of convexity:
+
+$$\prod_{i=1}{n} \mathbb{E}\[s^{X_{i}}\] \leq \prod_{i=1}{n} \bigg( 1 + (s-1)\mathbb{E} X_{i} \bigg)$$
+
+and AM-GM:
+
+$$ \Bigg( \frac{1}{n} \sum_{i=1}{n} \bigg(1 + (s-1)\mathbb{E} X_{i} \bigg) \Bigg)^{n}$$
+$$= \Bigg(1 + (s - 1)\frac{m}{n}^{n} \Bigg)$$
+
+Now the full LHS takes the form:
+
+$$s^{-m-\eta} \prod_{i=1}{n} \mathbb{E}\[s^{X_{i}}\] = s^{-m-\eta}\Bigg(1 + (s - 1)\frac{m}{n}^{n} \Bigg)$$
+
+## 9. Let $R_{k-NN}$ denote the asymptotic risk of the k-nearest neighbor classifier, where k is an odd positive integer. Use the expression of $R_{k-NN}$ found in class to show that:
+
+$$R_{k-NN} - R^{*} \leq sup_{p \in [0,\frac{1}{2}]} (1-2p) \mathbb{P}\{Bin(k,p) > k/2\}$$
+
+*Proof of above inequality:*
+
+$$R_{k-NN} - R^{*} = \mathbb{E}\bigg[ \left| 2\eta(x) + 1\right| \mathbb{P}\{Bin(k, min(\eta, 1-\eta) > \frac{k}{2}\ | X} \bigg]$$
+
+Which is less than or equal to the expected value of $\left| 2\eta(x) + 1\right|$ times the unconditional probability:
+
+$$\leq \mathbb{E}\bigg[ \left| 2\eta(x) + 1\right| \bigg] \mathbb{P}\{Bin(k, min(\eta, 1-\eta) > \frac{k}{2}\}$$
+
+$$= \mathbb{E}\bigg[ (1 - 2min(\eta, 1-\eta)) \bigg] \mathbb{P}\{Bin(k, min(\eta, 1-\eta) > \frac{k}{2}\}$$
+
+$$= 1 - 2\mathbb{E}\[min(\eta, 1-\eta)\] \mathbb{P}\{Bin(k, min(\eta, 1-\eta) > \frac{k}{2}\}$$
+
+$$\leq sup_{p \in [0,1/2]} (1-2p) \mathbb{P}\{Bin(k, min(\eta, 1-\eta) > \frac{k}{2}\}$$
+
+Use Hoeffding's inequality to deduce from this that:
+
+$$R_{k-NN} - R^{*} \leq \frac{1}{sqrt(ke)}$$
+
+For simplicity, we declare $B = Bin(k,p)$, and we can reduce
+
+$$\mathbb{P}\{B > \frac{k}{2} \} = \mathbb{P}\{ B - kp > k(\frac{1}{2} - p)\}$$
+
+Theorem 8.1, where $S_{n}$ is a sum of random variables:
+
+$$\mathbb{P}\{S_{n} - \mathbb{E}S_{n} \geq \epsilon\} \leq exp\{-2\epsilon^{2}/\sum(b_{i}-a_{i})^{2}\}$$
+
+The above expression can be expressed:
+
+$$\mathbb{P}\{ B - kp > k(\frac{1}{2} - p)\} \geq exp\{-2k(1-p)/\sum (b_{i} - a_{i})^{2}\}$$
+
+The sum in the exponent is always a sum of the difference between a binary variable, so it is a sum of k 1's.
+
+$$\mathbb{P}\{B > \frac{k}{2} \} \geq exp\{-2k(1/2 -p)^{2}\}$$
+
+Replacing $p$ with $u$ for simplicity ($u = 1 - 2p$) the entire expression can be written as:
+
+$$sup_{p \in [0,\frac{1}{2}]} (1-2p) \mathbb{P}\{Bin(k,p) > k/2\} \leq sup_{0 \leq u \leq 1} ue^{-ku^{2}/2}$$
+
+which is equivalent to
+
+$$ = \frac{1}{sqrt(ke)}$$
+
+## 10. (RADEMACHER AVERAGES) Let $\mathcal{A}$ be a bounded subset of $R_{n}$. Define the Rademacher Average: $$ R_{n}(A) = \mathbb{E} sup_{a \in A} \frac{1}{n} \left| \sum_{i=1}^{n} \sigma_{i}a_{i} \right| $$. where $\sigma_{1},...,\sigma_{n}$ are independent random variables with $\mathbb{P}\{\sigma_{i}=1\}=\mathbb{P}\{\sigma_{i}=-1\}=\frac{1}{2}$. Prove the following "structural" results:
+
+### $$R_{n}(A \cup B) \leq R_{n}(A) + R_{n}(B)$$
+
+*Proof:*
+
+$$R_{n}(A \cup B) = \mathbb{E} sup_{v \in A \cup B} \frac{1}{n} \left| \sigma_{i}v_{i} \right| $$
+
+$$ \leq \mathbb{E} sup_{a \in A} \frac{1}{n} \left| \sum_{i=1}^{n} \sigma_{i}a_{i} \right| + \mathbb{E} sup_{b \in B} \frac{1}{n} \left| \sum_{i=1}^{n} \sigma_{i}b_{i} \right| $$
+
+### $$R_{n}(c \bullet A) = |c| R_{n}A$$
+
+*Proof*
+
+$$R_{n} (c\bullet A) = \mathbb{E} sup_{a \in c \bullet A} \frac{1}{n} \left| \sum_{i=1}^{n} \sigma_{i} c a_{i} \right|$$
+$$= \left|a\right| \mathbb{E} sup_{a \in \bullet A} \frac{1}{n} \left| \sum_{i=1}^{n} \sigma_{i}a_{i} \right|$$
+
+### $$R_{n}(A \oplus B) = R_{n}(A) + R_{n}(B)$$
+
+*Proof*
+
+$$R_{n}(A \oplus B) = \mathbb{E} sup_{v \in A + B} \left| \frac{1}{n}\sum_{i=1}^{n}\sigma_{i}v_{i} \right|$$
+
+$$\mathbb{E} sup_{a \in A, b \in B} \left| \frac{1}{n} \sum_{i=1}^{n} \sigma_{i}(a_{i} + b_{i}) \right|$$
+
+$$\leq \mathbb{E} sup_{a \in A} \frac{1}{n} \left| \sigma_{i}a_{i} \right| + \mathbb{E} sup_{b \in B} \frac{1}{n} \left| \sigma_{i}b_{i} \right|$$
+
+$$= R_{n}(A) + R_{n}(B)$$
+
+### If $absconv(A) = \{\sum_{j=1}^{N}c_{j}a^{j} : N \in \mathbb{N}, \sum_{j=1}^{N} \left| c_{j}\right| \leq 1, a^{j} \in A \} is the absolute convex hull of A, then:$
+
+The absolute convex hull of $A$ is the union of all sets:
+
+$$c_{1}A_{1} + ... + c_{N}A_{N} = \{c_{1}a_{1} + ... + c_{N}a_{N} : a_{1}, ..., a_{N} \in A\}$$
+
+then, the rademacher average of a given set:
+
+$$R_{n}(c_{1}A_{1} + ... + c_{N}A_{N}) = \sum_{j=1}^{n} \left| c_{j}\right| R_{n}(A) \leq R_{n}(A)$$
+
+So for all $N$ choices of $c_{j}$, the Rademacher average of absolute convex hull of the set $A$ is less than or equal to the Rademacher average of $A$, so the Rademacher average of A is equal to the Rademacher average of A.
+
+## 11. A half plane is a set of the form $H_{a,b,c} = \{(x,y) \in \mathbb{R}^{2} : ax+bx \geq c\}$ for some real numbers $a,b,c$. Determine the n-th shatter coefficient of the classes:
+
+$$\mathcal{A}_{0} = \{H_{a,b,0} : a,b \in \mathbb{R}\} \text{ and } \mathcal{A}_{0} = \{H_{a,b,c} : a,b,c \in \mathbb{R}\}$$
+
+Any 3 non-collinear points can be shattered by the half planes as defined above, 
+
+
+

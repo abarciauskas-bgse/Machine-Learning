@@ -1,0 +1,89 @@
+---
+title: Large-Margin Classifiers
+author: Aimee Barciauskas
+output: pdf_document
+date: 5 February 2016
+---
+
+A few words about **perceptron** (1962):
+
+Suppose that $\mathcal{X} = \mathbb{R}^{d}$ and we want to do linear classification.
+
+We have data: $(X_{1},Y_{1}),...,(X_{n},Y_{n})$ where $Y_{i} \in \{-1,1\}$
+
+A linear classifer is of the form $g(x) = sgn(w^{T}x)$ (could add an offset but unnecessary), where $w \in \mathbb{R}^{d}$
+
+We are looking for the best linear split.
+
+Minimizing the empirical risk is NP hard.
+
+*Tangent: NP hard*
+
+All problems that can be solved in polynomial time are class $P$. The size in our problem is $nd$, there should be some $(nd)^{c}$. If someone tells me a solution, I can check in polynomial time if it is optimal.
+
+*NP complete*
+
+If you solve one of them, you can solve all of them.
+
+??Difference
+
+However, if the data are linearly seperable (i.e. there exists a w such that $R_{n}(g_{n}) = 0$)) then the problem is much easier. (Deterministic seperation, all 0's on one side, all 1's on the other)
+
+Take linear dot product with the $w$ vector and make a decision if it is positive or negative.
+
+### Perceptron Algorithm
+
+Iterative algorithm
+
+**Only works if deterministically seperable**
+
+1. Start with an arbitrary weight vector $w_{0}$ - the initial classifier (not having looked at the data)
+2. Take data points in an arbitrary order, say, $X_{1},X_{2},...,X_{n}$ and it may cycle as long as is necessary
+3. At time $t = 1,2,3$:
+    * if $sgn(w_{t-1}x_{t}) = Y_{t}$ then do nothing, $w_{t} = w_{t-1}$
+    * if $sgn(w_{t-1}x_{t}) \ne Y_{t}$ then update $w_{t} = w_{t-1} + Y_{t}X_{t}$
+
+Let's see if this makes sense... (plot)
+
+If the algorithm halts at some time $T$, then the final classifier is just:
+
+$$w_{T} = w_{0} + \sum_{t=1}^{T} \mathbb{I}_{sgn(w_{t-1}X_{t}) \ne Y_{t}} X_{t}Y_{t}$$
+
+**Perception Convergence Theorem**
+
+If the data are linearly seperable, then the algorithm halts (and therefore finds a classifier that seperates the data) in at most $\frac{R}{\gamma}^{2}$ iterations.
+
+Where 
+
+$$R = max_{i=1,...,n} | X_{i} |$$ the maximum of the norms of the $X_{i}$'s (the farthest point from the seperator)
+
+$$\gamma = min_{i=1,...,n} \left| X_{i}^{T} \frac{w_{T}}{|w_{T}|} \right|$$
+
+$\gamma$ is called the margin
+
+*Why is this an amazing result?*
+
+It halts, which is not that amazing. But it halt's in at most $\frac{R}{\gamma}^{2}$ iterations. Depends just on the $d$ and $n$!!!
+
+"Really nice data" data that is far away
+
+What matters is the difference between $R$ and $\gamma$ (not too much waffling)
+
+### Linear Classifier
+
+We want to find a linear classifier:
+
+$g(x) = sgn(w^{T}x)$ that minimizes the empirical risk $R_{n}(w)$
+
+$$R_{n}(w) = \frac{1}{n}\sum \mathbb{I}_{Y_{i} \ne sgn(w^{T}X_{i})} = \frac{1}{n}\sum \mathbb{I}_{-Y_{i}wX_{i} > 0}$$
+
+This is computationally hard, so we "convexify" the problem by replacing the indicator function by a convex surrogate $\phi(x)$
+
+We require that $\phi(x) \geq \mathbb{I}_{x>0}$
+
+Examples:
+
+* The "hinge loss" (SVM) $\phi(x) = (1 + x)_{+}$
+* The exponential loss $\phi(x) = e^{\lambda x}$ (for some $\lambda > 0$) (boosting)
+* The logistic loss $\phi(x) = log_{2}(1+e^{x})$ (logistic regression)
+

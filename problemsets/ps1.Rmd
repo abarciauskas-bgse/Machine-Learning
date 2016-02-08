@@ -4,7 +4,6 @@ author: Aimee Barciauskas
 date: 29 January 2016
 output: pdf_document
 ---
-# Problemset 1
 
 ### 1. Consider the binary classification problem with a priori probabilities $P\{Y=1\} = P\{Y=0\} = \frac{1}{2}$ and class-conditional densities $f_{0}(x) = f(x|Y = 0)$ and $f_{1}(x) = f(x|Y = 1)$ on $X = \mathbb{R}_{d}$. Prove that the Bayes risk equals:
 
@@ -143,7 +142,7 @@ Using the inequality $1+x \leq e^{x}$:
 
 $$\mathbb{P}\{\|X_{k}(x) - X\| > \epsilon\} \leq e^{-n c_{d} \epsilon^{d}}$$
 
-As $n$ goes to $\infty$ this term goes to 0 and
+As $n$ goes to $\infty$, the left-hand side goes to 0 and
 
 $$\|X_{k}(x) - X \| = 0 \to 1$$ in probability.
 

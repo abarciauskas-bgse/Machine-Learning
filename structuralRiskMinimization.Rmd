@@ -1,0 +1,64 @@
+---
+title: Structural Risk Minimization
+author: Aimee Barciauskas
+output: pdf_document
+date: 5 February 2016
+---
+
+$$sup_{g\in\mathcal{C}} \left| R_{n}(g) - R(g) \right| \leq 4\mathbb{E}\rho_{n}(\mathcal{C})$$
+
+Can be bounded in 2 ways:
+
+1. Rademacher average ($\rho$)
+2. Or, distribution-free bound using the VC dimension
+
+**What we really care about is $R(g_{n}) - R^{*}$**
+
+We decompose this into 2 terms:
+
+1. The estimation error $R(g_{n}) - min_{g\in\mathcal{C}}R(g)$
+2. The approximation error $min_{g\in\mathcal{C}}R(g) - R^{*}$
+
+Such that:
+
+$$R(g_{n}) - R^{*} = R(g_{n}) - min_{g\in\mathcal{C}}R(g) + min_{g\in\mathcal{C}}R(g) - R^{*}$$
+
+We want to balance these two, if class is too large, estimation error will be too large. If class is too small, approximation error will be too large.
+
+### Examples
+
+If $\mathcal{X} = \mathbb{R}$, $\mathcal{C_{k}} = \text{ class of all classifiers realized by the union of at most k intervals}$, which one is the optimal?
+
+*What do we see?*
+
+Let $g_{n}^{k} = argmin_{g\in\mathcal(C_{k})}R_{n}g$, we see a decreasing empirical risk.
+
+* $C_{k}$ class of classifiers realized by k-hyperplane cuts
+* Neural networks with k hidden neurons in one layer
+
+Options:
+
+* Estimate true error with subsample
+* Add the upper bound to the error to compare models (penalizing large classes)
+
+#### Penalty:
+
+**We penalize $R_{n}g_{n}^{k}$ by adding $2sqrt(\frac{V_{c_{k}}log(n+1)}{n})$ OR $2\rho_{n}(\mathcal{C_{k}})$**
+
+Then with high probability
+
+$$R(g_{n}^{k}) \leq R_{n}(g_{n}^{k}) + pen(k)$$
+
+Then, one can prove something like: if $\hat{k}$ is the index for which $R_{n}(g_{n}^{k}) + pen(k)$ is minimal, then the risk of
+
+"Oracle inequality":
+
+$$$\mathbb{E}R(g_{n}^{\hat{k}}) - R^{*} \leq min_{k} \Bigg(pen(k) + approximation error \Bigg)$$$
+
+If we do penalized risk minimization, we optimally balance the approximation error with this penalty. This is a good upper bound for the estimation error.
+
+We balance the estimation with a penalty.
+
+
+
+
