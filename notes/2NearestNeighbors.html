@@ -11,7 +11,7 @@
 
 <meta name="author" content="Aimee Barciauskas" />
 
-<meta name="date" content="2016-01-26" />
+<meta name="date" content="2016-02-08" />
 
 <title>Intro to Machine Learning and Binary Classification</title>
 
@@ -40,12 +40,21 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <h1 class="title">Intro to Machine Learning and Binary Classification</h1>
 <h3 class="subtitle"><em>An aggregation of class notes and Lugosi notes</em></h3>
 <h4 class="author"><em>Aimee Barciauskas</em></h4>
-<h4 class="date"><em>2016-01-26</em></h4>
+<h4 class="date"><em>2016-02-08</em></h4>
 </div>
 
 
 <div id="nearest-neighbor" class="section level1">
 <h1>Nearest Neighbor</h1>
+<p>Suppose that <span class="math inline">\(\mathcal{X}\)</span> is a metric space, distance is a function of <span class="math inline">\(X \in \mathcal{X}\)</span>.</p>
+<p>Properties of distances:</p>
+<ul>
+<li><span class="math inline">\(d(x,z) &gt; 0 \to x \ne z\)</span></li>
+<li><span class="math inline">\(d(x,x) = 0\)</span></li>
+<li><span class="math inline">\(d(x,z) = d(z,x)\)</span></li>
+<li><span class="math inline">\(d(x,z) \leq d(x,v) + d(v,z) \text{ the &quot;triangle inquality&quot;}\)</span></li>
+</ul>
+<p>Examples of how to measure metrix space: <span class="math inline">\(L_{2} \text{ (Euclidian, proof of the triangle inquality)}, L_{1} \text{ (&quot;Manhattan distance&quot;)}, L_{\inf}\)</span></p>
 <div id="nearest-neighbor-1" class="section level2">
 <h2>1-Nearest Neighbor</h2>
 <p>Algorithm:</p>
@@ -56,8 +65,12 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 </div>
 <div id="proof-of-proximity" class="section level2">
 <h2>Proof of proximity</h2>
-<p><em>Why can we assume the nearest neighbor is close?</em></p>
-<p>[ADD ME]</p>
+<p><em>Why can we assume the nearest neighbor is close?</em> <strong>EXERCISE</strong></p>
+<p>Answers:</p>
+<ul>
+<li><a href="https://app.box.com/files/0/f/4339446734/1/f_51633342485">Problemset 1, #5</a></li>
+<li><a href="https://app.box.com/files/0/f/4339446734/1/f_49556529122">Nearest Neighbor Notes, page 3</a></li>
+</ul>
 </div>
 <div id="properties-of-nearest-neighbors" class="section level2">
 <h2>Properties of Nearest Neighbors</h2>
@@ -81,15 +94,14 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 0 \text{ otherwise}\\
 \end{cases}\]</span></p>
 <p>Why bother?</p>
-<p>Suppose <span class="math inline">\(Y ~ Bern(0.9)\)</span> and <span class="math inline">\(Y' ~ Bern(0.9)\)</span>. Then, 1-NN risk (?) is <span class="math inline">\(2p(1-p)\)</span></p>
-<p>If <span class="math inline">\(Y' = (Y_{1}',...,Y_{k}')\)</span>, risk is <span class="math inline">\(\mathbb{E}\mathbb{P}(majority((Y_{1}',...,Y_{k}')) \ne Y|X)\)</span></p>
+<p>Suppose <span class="math inline">\(Y \sim Bern(0.9)\)</span> and <span class="math inline">\(Y' \sim Bern(0.9)\)</span>. Then, 1-NN risk is <span class="math inline">\(2p(1-p)\)</span>.</p>
+<p>If <span class="math inline">\(Y' = (Y_{1}',...,Y_{k}')\)</span>, risk is <span class="math inline">\(\mathbb{E}\{\mathbb{P}[majority((Y_{1}',...,Y_{k}')) \ne Y|X]\}\)</span></p>
 <p>For example, for 3-NN:</p>
 <p><span class="math display">\[\mathbb{P}(majority((Y_{1}',Y_{2}',Y_{3}')) \ne Y) = \eta(1-\eta)^{3} + 3\eta^{2}(1-\eta)^{2} + \eta^{3}(1-\eta) + 3\eta^{2}(1-\eta)^{2}\]</span></p>
 <p><label for="tufte-mn-1" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-1" class="margin-toggle"><span class="marginnote"><span style="display: block;">e.g. first term is probability all of <span class="math inline"><em>Y</em>′ ≠ <em>Y</em></span>, second term equivalent to probability 2 of <span class="math inline"><em>Y</em>′ ≠ <em>Y</em></span></span></span></p>
-<p>This can be reduced to:</p>
-<p><span class="math display">\[R^{3-NN} = 4\mathbb{E}[\eta(x)^{2}(1-\eta(x))^{2}]\]</span></p>
-<p>which “is peanuts”</p>
-<p><span class="math display">\[R^{k-NN}\]</span> in the general case [ADD ME]</p>
+<p>This can be reduced to: <span class="math inline">\(R^{3-NN} = \mathbb{E}[\eta(x)(1-\eta(x))] + 4\mathbb{E}[\eta(x)^{2}(1-\eta(x))^{2}]\)</span> which “is peanuts”</p>
+<p><span class="math inline">\(R^{k-NN}\)</span> in the general case: <strong>EXERCISE</strong></p>
+<p><a href="https://app.box.com/files/0/f/4339446734/1/f_49556529122">Nearest Neighbor Notes, page 8</a></p>
 <div id="corollaries" class="section level3">
 <h3>Corollaries</h3>
 <p><span class="math display">\[2R^{*} \geq R^{k-NN} \geq R^{*}\]</span></p>
@@ -101,6 +113,27 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <p>One can take <span class="math inline">\(k = k(n)\)</span></p>
 <p>Still we have</p>
 <p><span class="math display">\[\lVert X_{k(n)} - x \rVert \to 0 \text{ as $n\to\infty$ }\]</span></p>
+<p>if <span class="math inline">\(\frac{k(n)}{n} \to 0\)</span></p>
+<p>Moreover, if <span class="math inline">\(k(n) \to \infty\)</span> and <span class="math inline">\(\frac{k(n)}{n} \to 0\)</span>, then, for all distributions:</p>
+<p><span class="math display">\[R(g_{n}^{k(n)}) \to R^{*} \text{ in probability}\]</span></p>
+<label for="tufte-mn-3" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-3" class="margin-toggle"><span class="marginnote">
+<ul>
+<li>
+(LLN?) <span class="math inline"><em>k</em>(<em>n</em>) → ∞</span> is important for averaging to work, the variance is small.
+</li>
+<li>
+<span class="math inline"><span class="math inline">\(\frac{k(n)}{n} \to 0\)</span></span> implies bias is small
+</li>
+</ul>
+<p></span></p>
+<p><strong>Thus, the <span class="math inline">\(k(n)-NN\)</span> rule is univisally consistent</strong></p>
+<blockquote>
+<p>The real challenge in machine learning is to focus on where the action is. (Gabor)</p>
+</blockquote>
+</div>
+<div id="other-local-averaging-rules" class="section level2">
+<h2>Other local averaging rules</h2>
+<p>[ADD ME]</p>
 </div>
 </div>
 

@@ -3,22 +3,8 @@ title: "Intro to Machine Learning and Binary Classification"
 subtitle: "An aggregation of class notes and Lugosi notes"
 author: "Aimee Barciauskas"
 date: "`r Sys.Date()`"
-output:
-  tufte::tufte_html: default
-  tufte::tufte_handout:
-    citation_package: natbib
-    latex_engine: xelatex
-  tufte::tufte_book:
-    citation_package: natbib
-    latex_engine: xelatex
-link-citations: yes
+output: pdf_document
 ---
-
-```{r setup, include=FALSE}
-library(tufte)
-knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
-options(htmltools.dir.version = FALSE)
-```
 
 # Machine Learning
 
@@ -131,12 +117,10 @@ and $\eta : \mathcal{X} \to [0,1]$ is the a posterior probability
 
 $$\eta(x) = \mathbb{P}(Y = 1 | X = x)$$
 
-```{marginfigure}
 $$\mathbb{E}(X|Z) \to \text{ a random variable}$$
 $$\mathbb{E}(X|Z = z) \to \text{ a value}$$
 $$\mathbb{E}[\mathbb{E}(X|Z = z)] = \mathbb{E}(X)$$
 $$\mathbb{P}(X \in A) = \mathbb{E}\mathbb{I}_{X \in A}$$
-```
 
 We may also define the a priori probabilties:
 
@@ -185,9 +169,9 @@ $$ = (2\eta(x) - 1)(\mathbb{I}_{g^{*}(x) = 1} - \mathbb{I}_{g(x) = 1} \geq 0$$
 
 $R^{*} = R(g)$ is called the **Bayes Risk**
 
-```{marginfigure}
+
 $R^{*} = 0$ means that the two classes are *seperable*. $R^{*} = \frac{1}{2}$ means complete overlap.
-```
+
 
 The proof shows that:
 
@@ -199,9 +183,7 @@ $$R(g) = 1 - \mathbb{E}[\mathbb{I}_{\eta(x) > 1}\eta(x)]- \mathbb{E}[\mathbb{I}_
 
 Thus, the optimal classifier is easy to determine. However, it requires the knowledge of the function $\eta(x)$ which is rarely available. Typically all we have is training data.
 
-```{marginfigure}
 $$R(g^{*}) = \mathbb{E}[min(1-\eta(x), \eta(x))]$$
-```
 
 \noindent\fbox{%
     \parbox{\textwidth}{%
@@ -214,9 +196,8 @@ $$R(g^{*}) = \mathbb{E}[min(1-\eta(x), \eta(x))]$$
     }%
 }
 
-```{marginfigure}
 *The maximum of convex function is convex. The minimum of a concave function is concave*
-```
+
 
 ## Plug-in Classifiers
 
