@@ -75,13 +75,7 @@ $$R_{k-NN} - R^{*} \leq \sup_{p \in [0,\frac{1}{2}]} (1-2p) \mathbb{P}\{Bin(k,p)
 
 *Proof:*
 
-$$R_{k-NN} - R^{*} = \mathbb{E}\bigg[ \left| 2\eta(x) + 1 \right| \mathbb{P}\{Bin(k, min(\eta, 1-\eta) > \frac{k}{2} \vert X\} \bigg]$$
-
-$$\leq \mathbb{E}\bigg[ \left| 2\eta(x) + 1\right| \bigg] \mathbb{P}\{Bin(k, min(\eta, 1-\eta) > \frac{k}{2}\}$$
-
-$$= \mathbb{E}\bigg[ (1 - 2min(\eta, 1-\eta)) \bigg] \mathbb{P}\{Bin(k, min(\eta, 1-\eta) > \frac{k}{2}\}$$
-
-$$= 1 - 2\mathbb{E}[min(\eta, 1-\eta)] \mathbb{P}\{Bin(k, min(\eta, 1-\eta) > \frac{k}{2}\}$$
+[ADD ME]
 
 $$\leq \sup_{p \in [0,1/2]} (1-2p) \mathbb{P}\{Bin(k, min(\eta, 1-\eta) > \frac{k}{2}\}$$
 
