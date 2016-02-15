@@ -44,7 +44,7 @@ Start with the equality:
 
 $$\mathbb{P}\{X \geq t\} = \mathbb{P}\{e^{\lambda X} \geq e^{\lambda t}\}$$
 
-Using Chrenoff, we know this probability is less than or equal to:
+Using Chernoff, we know this probability is less than or equal to:
 
 $$\mathbb{P}\{e^{\lambda X} \geq e^{\lambda t}\} \leq \frac{\mathbb{E}[e^{\lambda X}]}{e^{\lambda t}}$$
 
@@ -73,61 +73,68 @@ $$\leq (\frac{m}{t})^{t} e^{t-m}$$
 
 $$R_{k-NN} - R^{*} \leq \sup_{p \in [0,\frac{1}{2}]} (1-2p) \mathbb{P}\{Bin(k,p) > k/2\}$$
 
-*Proof:*
+*Part 1:*
 
-[ADD ME]
+$$R_{k-NN} = \mathbb{E}[min(\eta(x), 1-\eta(x))] + \mathbb{E}[\left|2\eta(x) - 1\right|\mathbb{P}\{Bin(k, min(\eta(x),1-\eta(x)) > \frac{k}{2} | X \}]$$
 
-$$\leq \sup_{p \in [0,1/2]} (1-2p) \mathbb{P}\{Bin(k, min(\eta, 1-\eta) > \frac{k}{2}\}$$
+$$p = min(\eta(x), 1-\eta(x)) = \frac{1-|2\eta(x) - 1|}{2}$$
 
-Now we use Hoeffding's inequality to proof:
+$$1 - 2p = |2\eta(x) - 1|$$
+
+$$R_{k-NN} = \mathbb{E}[min(\eta(x), 1-\eta(x))] + \mathbb{E}[(1-2p)\mathbb{P}\{Bin(k, p) > \frac{k}{2} | X\}]$$
+
+The first term is $R^{*}$. The second term can be upper bounded by the supremum $p \in [0,1/2]$:
+
+$$R_{k-NN} - R^{*} \leq \sup_{p \in [0,1/2]} (1-2p) \mathbb{P}\{Bin(k, p > \frac{k}{2}\}$$
+
+*Part 2:*
 
 $$R_{k-NN} - R^{*} \leq \frac{1}{\sqrt{ke}}$$
 
-For simplicity, we declare $B = Bin(k,p)$, and $p = min(\eta, 1-\eta)$ and we can reduce
+For simplicity, define $B = Bin(k,p)$, and $p = min(\eta, 1-\eta)$ and we can reduce
 
 $$\mathbb{P}\{Bin(k, min(\eta, 1-\eta) > \frac{k}{2}\} = \mathbb{P}\{B > \frac{k}{2} \}$$
 $$\mathbb{P}\{B > \frac{k}{2} \} = \mathbb{P}\{ B - kp > k(\frac{1}{2} - p)\}$$
+$$= \mathbb{P}\{ \frac{B - kp}{k} > \frac{1}{2} - p\}$$
 
-Theorem 8.1, where $S_{n}$ is a sum of random variables:
+Using Hoeffding's inequality:
 
-$$\mathbb{P}\{S_{n} - \mathbb{E}S_{n} \geq \epsilon\} \leq exp\{-2\epsilon^{2}/\sum(b_{i}-a_{i})^{2}\}$$
+$$\mathbb{P}\{ \frac{B - kp}{k} > \frac{1}{2} - p\} \leq e^{-2k(\frac{1}{2} - p)^{2}}$$
 
-Since $B$ is a sum of random variables and $kp$ is it's expected value, the above expression can be expressed:
-
-$$\mathbb{P}\{ B - kp > k(\frac{1}{2} - p)\} \geq exp\{-2k(1-p)/\sum (b_{i} - a_{i})^{2}\}$$
-
-The sum in the exponent is always a sum of the difference between a binary variable, so it is a sum of k 1's.
-
-$$\mathbb{P}\{B > \frac{k}{2} \} \geq exp\{-2k(1/2 -p)^{2}\}$$
-
-Replacing $p$ with $u$ for simplicity ($u = 1 - 2p$) the entire expression can be written as:
+Substituting $u = 1 - 2p$:
 
 $$\sup_{p \in [0,\frac{1}{2}]} (1-2p) \mathbb{P}\{Bin(k,p) > k/2\} \leq \sup_{0 \leq u \leq 1} ue^{-ku^{2}/2}$$
 
-which is equivalent to
+differentiating with respect to $u$ and setting equal to 0, you find the supremum when $u = \frac{1}{\sqrt{k}}$. Substituting this value for $u$:
 
-$$ = \frac{1}{\sqrt{ke}}$$
+$$= \frac{1}{\sqrt{ke}}$$
 
-## 10. (RADEMACHER AVERAGES) Let $\mathcal{A}$ be a bounded subset of $R_{n}$. Define the Rademacher Average: $$ R_{n}(A) = \mathbb{E} \sup_{a \in A} \frac{1}{n} \left| \sum_{i=1}^{n} \sigma_{i}a_{i} \right| $$. where $\sigma_{1},...,\sigma_{n}$ are independent random variables with $\mathbb{P}\{\sigma_{i}=1\}=\mathbb{P}\{\sigma_{i}=-1\}=\frac{1}{2}$. Prove the following "structural" results:
+$$R_{k-NN} - R^{*} \leq \frac{1}{\sqrt{ke}}$$
 
-### $$R_{n}(A \cup B) \leq R_{n}(A) + R_{n}(B)$$
+## 10. (RADEMACHER AVERAGES) Let $\mathcal{A}$ be a bounded subset of $R_{n}$. Define the Rademacher Average: $$ R_{n}(A) = \mathbb{E} \sup_{a \in A} \frac{1}{n} \left| \sum_{i=1}^{n} \sigma_{i}a_{i} \right| $$ where $\sigma_{1},...,\sigma_{n}$ are independent random variables with $\mathbb{P}\{\sigma_{i}=1\}=\mathbb{P}\{\sigma_{i}=-1\}=\frac{1}{2}$. Prove the following "structural" results:
 
-*Proof:*
+*Part 1:*
+
+### Prove: $$R_{n}(A \cup B) \leq R_{n}(A) + R_{n}(B)$$
 
 $$R_{n}(A \cup B) = \mathbb{E} \sup_{v \in A \cup B} \frac{1}{n} \left| \sigma_{i}v_{i} \right| $$
 
 $$ \leq \mathbb{E} \sup_{a \in A} \frac{1}{n} \left| \sum_{i=1}^{n} \sigma_{i}a_{i} \right| + \mathbb{E} \sup_{b \in B} \frac{1}{n} \left| \sum_{i=1}^{n} \sigma_{i}b_{i} \right| $$
 
-### $$R_{n}(c \bullet A) = |c| R_{n}A$$
+$$= R_{n}(A) + R_{n}(B)$$
 
-*Proof*
+*Part 2:*
 
-$$R_{n} (c\bullet A) = \mathbb{E} \sup_{a \in c \bullet A} \frac{1}{n} \left| \sum_{i=1}^{n} \sigma_{i} c a_{i} \right|$$
-$$= \left|a\right| \mathbb{E} \sup_{a \in \bullet A} \frac{1}{n} \left| \sum_{i=1}^{n} \sigma_{i}a_{i} \right|$$
+### Prove: $$R_{n}(c * A) = |c| R_{n}A$$
 
-### $$R_{n}(A \oplus B) = R_{n}(A) + R_{n}(B)$$
+$$R_{n} (* A) = \mathbb{E} \sup_{a \in c * A} \frac{1}{n} \left| \sum_{i=1}^{n} \sigma_{i} c a_{i} \right|$$
+$$= \left|c\right| \mathbb{E} \sup_{a \in * A} \frac{1}{n} \left| \sum_{i=1}^{n} \sigma_{i}a_{i} \right|$$
 
-*Proof*
+$$= |c| R_{n}A$$
+
+*Part 3:*
+
+### Prove $$R_{n}(A \oplus B) = R_{n}(A) + R_{n}(B)$$
 
 $$R_{n}(A \oplus B) = \mathbb{E} \sup_{v \in A + B} \left| \frac{1}{n}\sum_{i=1}^{n}\sigma_{i}v_{i} \right|$$
 
@@ -137,7 +144,9 @@ $$\leq \mathbb{E} \sup_{a \in A} \frac{1}{n} \left| \sigma_{i}a_{i} \right| + \m
 
 $$= R_{n}(A) + R_{n}(B)$$
 
-### If $absconv(A) = \{\sum_{j=1}^{N}c_{j}a^{j} : N \in \mathbb{N}, \sum_{j=1}^{N} \left| c_{j}\right| \leq 1, a^{j} \in A \} \text{ is the absolute convex hull of A, then:}$
+*Part 4:*
+
+### Prove: If $absconv(A) = \{\sum_{j=1}^{N}c_{j}a^{j} : N \in \mathbb{N}, \sum_{j=1}^{N} \left| c_{j}\right| \leq 1, a^{j} \in A \} \text{ is the absolute convex hull of A, then:}$
 
 The absolute convex hull of $A$ is the union of all sets:
 
@@ -147,13 +156,17 @@ then, the rademacher average of a given set:
 
 $$R_{n}(c_{1}A_{1} + ... + c_{N}A_{N}) = \sum_{j=1}^{n} \left| c_{j}\right| R_{n}(A) \leq R_{n}(A)$$
 
-So for all $N$ choices of $c_{j}$, the Rademacher average of absolute convex hull of the set $A$ is less than or equal to the Rademacher average of $A$, so the Rademacher average of A is equal to the Rademacher average of A.
+For all $N$ choices of $c_{j}$, the Rademacher average of absolute convex hull of the set $A$ is less than or equal to the Rademacher average of $A$, so the Rademacher average of $\mathcal{A}$ is equal to the Rademacher average of the absolute convex hull of $\mathcal{A}$.
 
 ## 11. A half plane is a set of the form $H_{a,b,c} = \{(x,y) \in \mathbb{R}^{2} : ax+by \geq c\}$ for some real numbers $a,b,c$. Determine the n-th shatter coefficient of the classes:
 
 $$\mathcal{A}_{0} = \{H_{a,b,0} : a,b \in \mathbb{R}\} \text{ and } \mathcal{A}_{0} = \{H_{a,b,c} : a,b,c \in \mathbb{R}\}$$
 
-In the first case, $\mathcal{A}_{0} = \{H_{a,b,0} : a,b \in \mathbb{R}\}$, a half plane must pass through the origin so it can only rotate around the origin. So $n$ points can be subset into $n+1$ different ways. So the n-th shatter coefficient is $n+1$.
+*Part 1:*
+
+In the first case, $\mathcal{A}_{0} = \{H_{a,b,0} : a,b \in \mathbb{R}\}$, a half plane must pass through the origin so it can only rotate around the origin. $n$ points can be subset into $n+1$ different ways. Thus, the n-th shatter coefficient is $n+1$.
+
+*Part 2:*
 
 *Corollary 13.1* defines the shatter coefficient for the class of all half-spaces. Adapting the equation for the class of half-spaces in $\mathbb{R}^{2}$ gives:
 

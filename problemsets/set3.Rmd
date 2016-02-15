@@ -1,0 +1,22 @@
+---
+title: Machine Learning Problemset 3
+author: Aimee Barciauskas
+date: 26 February 2016
+output: pdf_document
+---
+
+## **Problem 12**
+
+**Consider the class $\mathcal{A}$ of all sets of the form:**
+
+$$A_{\alpha} = \{ x \in \mathbb{R} : sin(\alpha x) > 0 \}$$
+
+**where $\alpha > 0$. What is the VC dimension of $\mathcal{A}$? (Note that $\mathcal{A}$ has one free parameter.)**
+
+The VC dimension of $\mathcalA$ is infinite.
+
+For example, if $x_{i} = 2^{-i}, i = 1, ..., m$ are assigned arbitrarily label $(y_{1},...,y_{m}) \in {-1,1}^{m}$, $\alpha$ may be chosen such that any such label set is correctly classified:
+
+$$\alpha = \pi(1 + \sum_{i=1}^{m} 2^{i}\frac{1-y_{i}}{2})$$
+
+(page 6)[http://www.cs.nyu.edu/~mohri/ml12/sol2.pdf]
