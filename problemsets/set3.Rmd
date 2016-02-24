@@ -85,8 +85,9 @@ http://serdis.dis.ulpgc.es/~itis-ta2/perceptron.pdf
 
 ## **Problem 15**
 
-R/gamma**2
-http://math.arizona.edu/~hzhang/math574m/LOOtheory.pdf pg 15
+If we have $n$ data points, where $n$ is an odd number and $\mathbb{P}\{Y=1\} = \mathbb{P}\{Y=0\} = \frac{1}{2}$ the true error is $\frac{1}{2}$ and the estimate of the error using the leave-one-out classifier is either $\frac{\frac{n+1}{2}}{n}$ or $\frac{\frac{n-1}{2}}{n}$ in averaging these two which are equally likely we get the true error $\frac{1}{2}$. If classes are imbalanced such $\mathbb{P}\{Y=1\} \ne \mathbb{P}\{Y=0\}$ the same approximation will hold in that the difference of the estimate does not change much when one observation is removed.
+
+This can be used to bound the expected risk of the perception classifier: $\mathbb{E}\Big[ R_{n}(g_{n-1}) \Big]$ is the number of updates made during the perception classifier. This is a aboudn because otherwise the $x_{i}$ is correctly classified by the algorithm and no update is made. So the estimation of the risk based on the leave one out estimator is the same as $M$ the number of iterations made by the preception althorithm. This $M$ is upper-bounded (Novikoff) by $(\frac{R}{\gamma})^{2}$
 
 ## **Problem 16**
 
