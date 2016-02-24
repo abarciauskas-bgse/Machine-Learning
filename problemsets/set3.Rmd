@@ -20,3 +20,29 @@ For example, if $x_{i} = 2^{-i}, i = 1, ..., m$ are assigned arbitrarily label $
 $$\alpha = \pi(1 + \sum_{i=1}^{m} 2^{i}\frac{1-y_{i}}{2})$$
 
 (page 6)[http://www.cs.nyu.edu/~mohri/ml12/sol2.pdf]
+
+## **Problem 13**
+
+http://www.davideisenstat.com/cv/EisenstatA07.pdf pg 1-2
+http://www2.denizyuret.com/ref/blumer/ft_gateway.cfm.pdf pg 22 / pg 950
+
+## **Problem 14**
+
+OK
+
+Show that wt - w* l2 norm < wt-1 - w* l2 norm - 1
+
+wt is only updated whenever wTtXtYt < 0
+
+Expand the l2 norms to get wt - w*
+
+http://serdis.dis.ulpgc.es/~itis-ta2/perceptron.pdf
+
+## **Problem 15**
+
+R/gamma**2
+http://math.arizona.edu/~hzhang/math574m/LOOtheory.pdf pg 15
+
+## **Problem 16**
+
+pg 166 of book
