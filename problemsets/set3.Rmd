@@ -73,15 +73,32 @@ $u \leq 4Vklog(2Vk)$
 
 ## **Problem 14**
 
-OK
+$$| w_{t} - w_{*} |^{2} \leq | w_{t-1} - w_{*} |^{2} - 1$$
 
-Show that wt - w* l2 norm < wt-1 - w* l2 norm - 1
+We have $w_{t} = w_{t-1} + \frac{Y_{t}X_{t}}{|X_{t}|}$, so the first term can be re-written as:
 
-wt is only updated whenever wTtXtYt < 0
+$$| w_{t-1} - w_{*} + \frac{Y_{t}X_{t}}{|X_{t}|} | ^{2} = | w_{t-1} - w_{*} |^{2} + (\frac{Y_{t}X_{t}}{|X_{t}|})^{2} + 2(w_{t-1} - w_{*}) \frac{Y_{t}X_{t}}{|X_{t}|}$$
 
-Expand the l2 norms to get wt - w*
+$$= | w_{t-1} - w_{*} |^{2} + (\frac{Y_{t}X_{t}}{|X_{t}|})^{2} + 2w_{t-1}\frac{Y_{t}X_{t}}{|X_{t}|} - 2w_{*}\frac{Y_{t}X_{t}}{|X_{t}|}$$
 
-http://serdis.dis.ulpgc.es/~itis-ta2/perceptron.pdf
+The first term above equals the first term in the RHS of our initial inequality to be proved.
+
+The second term is 1, so we subtract it from the RHS and get an equality of the first two terms of the expanded LHS and RHS.
+
+*The last two terms formulate the inquality:* We know the second to last term $2w_{t-1}\frac{Y_{t}X_{t}}{|X_{t}|} < 0$ when the percepton makes no more updates. and the last term $2w_{*}\frac{Y_{t}X_{t}}{|X_{t}|} \geq 1$. Something negative minus something positive is negative, so the whole term is negative. Adding this negative term to the other side we get the inequality:
+
+$$| w_{t} - w_{*} |^{2} \leq | w_{t-1} - w_{*} |^{2} - 1$$
+
+Using this inquality iteratively:
+
+$$| w_{t-1} - w_{*} |^{2} \leq | w_{t-2} - w_{*} |^{2} - 2$$
+$$| w_{t-2} - w_{*} |^{2} \leq | w_{t-3} - w_{*} |^{2} - 3$$
+.
+.
+$$| w_{*} - w_{*} |^{2} \leq | w_{0} - w_{*} |^{2} - k$$ where $k$ is the number of steps. so we get:
+
+$$k \leq | w_{0} - w_{*} |^{2}$$ the number of steps is less than or equal to the RHS.
+
 
 ## **Problem 15**
 
