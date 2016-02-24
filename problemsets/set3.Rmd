@@ -19,12 +19,57 @@ For example, if $x_{i} = 2^{-i}, i = 1, ..., m$ are assigned arbitrarily label $
 
 $$\alpha = \pi(1 + \sum_{i=1}^{m} 2^{i}\frac{1-y_{i}}{2})$$
 
-(page 6)[http://www.cs.nyu.edu/~mohri/ml12/sol2.pdf]
+## **Problem 13** 
 
-## **Problem 13**
+**Let $\mathcal{A}_{1}, ... , \mathcal{A}_{k}$ be classes of sets, all of the with VC dimension at most $V$. Show that the VC-dimension of $\cup_{i=1}^{k} \mathcal{A_{i}}$ is at most $4Vlog_{2}(2V) + 4k$. You may use the fact that for $a \geq 1$ and $b > 0$, if $x \geq 4a log(2a) + 2b$ then $x \geq a log x + b$.**
 
-http://www.davideisenstat.com/cv/EisenstatA07.pdf pg 1-2
-http://www2.denizyuret.com/ref/blumer/ft_gateway.cfm.pdf pg 22 / pg 950
+**Can you bound the VC dimension of the class of all sets of the form:**
+
+$$A_{1} \cup ... \cup A_{k} \text{ with } A_{1} \in \mathcal{A}_{1}, ..., A_{k} \in \mathcal{A}_{k}$$
+
+*Part 1 Solution:*
+
+$$u = VC dimension of A$$
+
+Sauer's Lemma:
+
+$$\mathcal{S}_{\mathcal{A}} = \mathcal{S}_{A_{1}} + \mathcal{S}_{A_{1}} + ... + \mathcal{S}_{A_{k}} \leq k(u+1)^{V} $$
+
+By definition:
+
+$$\mathcal{S} = 2^{u}$$
+
+$$2^{u} \leq k(u+1)^{V}$$
+
+$$u \leq log(k) + Vlog(u+1)$$
+
+$$ = log(k) + Vlog(u+1)$$
+
+$$log(k) \leq 2k$$
+
+$$= 2k + Vlog(u+1)$$
+
+Using $log(u+1) \approx log(u)$
+
+$$u \leq 2k + Vlog(u)$$
+
+Using the hints from the problem where $a = V$, $x = u$ and $b = 2k$ this can be re-written as:
+
+$$u \leq 4Vlog(2V) + 4k$$
+
+*Part 2 Solution:*
+
+Again, using Sauer's Lemma, this time with the union of sets of $A_{1} \cup ,..., \cup A_{k}$, you multiply the shatter coefficients:
+
+$$\mathcal{S}_{\mathcal{A}}(n) \leq \mathcal{S}_{\mathcal{A}_{1}}(n) \times \mathcal{S}_{\mathcal{A}_{1}}(n) \times ... \times \mathcal{S}_{\mathcal{A}_{k}} \leq (n+1)^{Vk}$$
+
+$$\mathcal{S}_{\mathcal{A}}(u) = 2^{u} \leq (u+1)^{Vk}$$
+
+$$u \leq Vklog(u+1)$$
+
+Let $a = Vk$, $b=0$, $x=u+1$
+
+$u \leq 4Vklog(2Vk)$
 
 ## **Problem 14**
 
@@ -45,4 +90,24 @@ http://math.arizona.edu/~hzhang/math574m/LOOtheory.pdf pg 15
 
 ## **Problem 16**
 
-pg 166 of book
+**Consider the majority classifier:**
+
+$$g_{n}(x, D_{n}) =
+    \begin{cases}
+      1, & \text{if}\ \sum_{i=1}^{n} Y_{i} \geq \frac{n}{2} \\
+      0, & \text{otherwise}
+    \end{cases}
+$$
+
+**(Thus, $g_{n}$ ignores $x$ and the $X_{i}$’s.) Assume that $n$ is odd. What is the expected risk $\mathbb{E}R(g_{n}) = \mathbb{P} \{g_{n}(X) \ne Y\}$ of this classifier? Study the performance of the leave-one-out error estimate. Show that for some distributions $Var(R_{n}^{D}(g_{n})) \geq c/\sqrt{n}$ for some constant $c$. *Hint:* Strang things happen when the number of 0's and 1's is about the same in the data.**
+
+*Solution Part 1:*
+
+Let $N_{n}$ be the number of $Y_{i} = 0$ in the sample. So $N_{n}$ is binomial $(n, 1-p)$ with $p$ the $P{Y=1}$.
+
+$$\mathbb{E}(R(g_{n})) = p\mathbb{P}\bigg\{ N_{n} \geq \frac{n}{2} \bigg\} + (1-p)\mathbb{P}\bigg\{ N_{n} < \frac {n}{2} \bigg\} \to min(p, 1-p)$$
+
+*Solution Part 2:*
+
+The "worst" case data for the majority classifier is when $\mathbb{P}\{Y=1\} = \mathbb{P}\{Y=0\} = \frac{1}{2}$, in this case the expected risk is $\frac{1}{2}$. Assuming $n$ is odd, we can lower bound the sample variance for a given set of $n$ data points by minimizing the difference between the risk of the data and the expected risk as estimated by the leave-one-out classifier. This minimization of difference between our estimated risk and the average risk yields $Var(R_{n}^{D}(g_{n})) = \frac{1}{n^{2}}$ such that we can lower bound the variance by $\frac{c}{\sqrt{n}}$ with $c \leq \frac{1}{n}$
+
