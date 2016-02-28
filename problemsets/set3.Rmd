@@ -13,9 +13,9 @@ $$A_{\alpha} = \{ x \in \mathbb{R} : sin(\alpha x) > 0 \}$$
 
 **where $\alpha > 0$. What is the VC dimension of $\mathcal{A}$? (Note that $\mathcal{A}$ has one free parameter.)**
 
-The VC dimension of $\mathcalA$ is infinite.
+The VC dimension of $\mathcal{A}$ is infinite.
 
-For example, if $x_{i} = 2^{-i}, i = 1, ..., m$ are assigned arbitrarily label $(y_{1},...,y_{m}) \in {-1,1}^{m}$, $\alpha$ may be chosen such that any such label set is correctly classified:
+For example, if $x_{i} = 2^{-i}, i = 1, ..., m$ are assigned arbitrary labels $(y_{1},...,y_{m}) \in \{-1,1\}^{m}$, $\alpha$ may be chosen such that any label set is correctly classified:
 
 $$\alpha = \pi(1 + \sum_{i=1}^{m} 2^{i}\frac{1-y_{i}}{2})$$
 
@@ -29,15 +29,15 @@ $$A_{1} \cup ... \cup A_{k} \text{ with } A_{1} \in \mathcal{A}_{1}, ..., A_{k} 
 
 *Part 1 Solution:*
 
-$$u = VC dimension of A$$
+$$s_{\mathcal{A}} = 2^{u} \text{ such that $\alpha$ is the VC dimension of $\mathcal{A}$}$$
 
 Sauer's Lemma:
 
-$$\mathcal{S}_{\mathcal{A}} = \mathcal{S}_{A_{1}} + \mathcal{S}_{A_{1}} + ... + \mathcal{S}_{A_{k}} \leq k(u+1)^{V} $$
+$$s_{\mathcal{A}} \leq s_{\mathcal{A}_{1}} + s_{\mathcal{A}_{2}} + ... + s_{\mathcal{A}_{k}} \leq k(u+1)^{V} $$
 
-By definition:
+If there exists a $u$ which satisfies:
 
-$$\mathcal{S} = 2^{u}$$
+$$s_{\mathcal{A}} = 2^{u}$$
 
 $$2^{u} \leq k(u+1)^{V}$$
 
@@ -59,52 +59,65 @@ $$u \leq 4Vlog(2V) + 4k$$
 
 *Part 2 Solution:*
 
-Again, using Sauer's Lemma, this time with the union of sets of $A_{1} \cup ,..., \cup A_{k}$, you multiply the shatter coefficients:
+For the union of sets of $A_{1} \cup ... \cup A_{k}$:
 
-$$\mathcal{S}_{\mathcal{A}}(n) \leq \mathcal{S}_{\mathcal{A}_{1}}(n) \times \mathcal{S}_{\mathcal{A}_{1}}(n) \times ... \times \mathcal{S}_{\mathcal{A}_{k}} \leq (n+1)^{Vk}$$
+$$s_{\mathcal{A}}(n) \leq s_{\mathcal{A}_{1}}(n) \times s_{\mathcal{A}_{1}}(n) \times ... \times s_{\mathcal{A}_{k}} \leq (n+1)^{Vk}$$
 
-$$\mathcal{S}_{\mathcal{A}}(u) = 2^{u} \leq (u+1)^{Vk}$$
+$$s_{\mathcal{A}}(u) = 2^{u} \leq (u+1)^{Vk}$$
 
 $$u \leq Vklog(u+1)$$
 
-Let $a = Vk$, $b=0$, $x=u+1$
+Let $a = Vk$, $b=\epsilon$, $x=u+1$, where $\epsilon$ is some small number:
 
-$u \leq 4Vklog(2Vk)$
+$$u \leq 4Vklog(2Vk)$$
 
 ## **Problem 14**
 
-$$| w_{t} - w_{*} |^{2} \leq | w_{t-1} - w_{*} |^{2} - 1$$
+$$\lVert w_{t} - w_{*} \rVert^{2} \leq \lVert w_{t-1} - w_{*} \rVert^{2} - 1$$
 
-We have $w_{t} = w_{t-1} + \frac{Y_{t}X_{t}}{|X_{t}|}$, so the first term can be re-written as:
+We have $w_{t} = w_{t-1} + \frac{Y_{t}X_{t}}{\lVert X_{t}\lVert }$, so the first term can be re-written as:
 
-$$| w_{t-1} - w_{*} + \frac{Y_{t}X_{t}}{|X_{t}|} | ^{2} = | w_{t-1} - w_{*} |^{2} + (\frac{Y_{t}X_{t}}{|X_{t}|})^{2} + 2(w_{t-1} - w_{*}) \frac{Y_{t}X_{t}}{|X_{t}|}$$
+$$\lVert w_{t-1} - w_{*} + \frac{Y_{t}X_{t}}{\lVert X_{t}\lVert} \lVert ^{2} = \lVert w_{t-1} - w_{*} \rVert^{2} + \bigg(\frac{Y_{t}X_{t}}{\lVert X_{t}\lVert}\bigg)^{2} + 2(w_{t-1} - w_{*}) \frac{Y_{t}X_{t}}{\lVert X_{t}\lVert}$$
 
-$$= | w_{t-1} - w_{*} |^{2} + (\frac{Y_{t}X_{t}}{|X_{t}|})^{2} + 2w_{t-1}\frac{Y_{t}X_{t}}{|X_{t}|} - 2w_{*}\frac{Y_{t}X_{t}}{|X_{t}|}$$
+$$= \lVert w_{t-1} - w_{*} \rVert^{2} + \bigg(\frac{Y_{t}X_{t}}{\lVert X_{t}\lVert}\bigg)^{2} + 2w_{t-1}\frac{Y_{t}X_{t}}{\lVert X_{t}\lVert} - 2w_{*}\frac{Y_{t}X_{t}}{\lVert X_{t}\lVert}$$
 
 The first term above equals the first term in the RHS of our initial inequality to be proved.
 
 The second term is 1, so we subtract it from the RHS and get an equality of the first two terms of the expanded LHS and RHS.
 
-*The last two terms formulate the inquality:* We know the second to last term $2w_{t-1}\frac{Y_{t}X_{t}}{|X_{t}|} < 0$ when the percepton makes no more updates. and the last term $2w_{*}\frac{Y_{t}X_{t}}{|X_{t}|} \geq 1$. Something negative minus something positive is negative, so the whole term is negative. Adding this negative term to the other side we get the inequality:
+*The last two terms formulate the inquality:* We know the second to last term $2w_{t-1}\frac{Y_{t}X_{t}}{\lVert X_{t}\lVert} < 0$ when the percepton makes no more updates. and the last term $2w_{*}\frac{Y_{t}X_{t}}{\lVert X_{t}\lVert} \geq 1$. Something negative minus something positive is negative, so the whole term is negative. Adding this negative term to the other side we get the inequality:
 
-$$| w_{t} - w_{*} |^{2} \leq | w_{t-1} - w_{*} |^{2} - 1$$
+$$\lVert w_{t} - w_{*} \rVert^{2} \leq \lVert w_{t-1} - w_{*} \rVert^{2} - 1$$
 
 Using this inquality iteratively:
 
-$$| w_{t-1} - w_{*} |^{2} \leq | w_{t-2} - w_{*} |^{2} - 2$$
-$$| w_{t-2} - w_{*} |^{2} \leq | w_{t-3} - w_{*} |^{2} - 3$$
-.
-.
-$$| w_{*} - w_{*} |^{2} \leq | w_{0} - w_{*} |^{2} - k$$ where $k$ is the number of steps. so we get:
+$$\lVert w_{t-1} - w_{*} \rVert^{2} \leq \lVert w_{t-2} - w_{*} \rVert^{2} - 2$$
+$$\lVert w_{t-2} - w_{*} \rVert^{2} \leq \lVert w_{t-3} - w_{*} \rVert^{2} - 3$$
+$$...$$
+$$\lVert w_{*} - w_{*} \rVert^{2} \leq \lVert w_{0} - w_{*} \rVert^{2} - k$$ where $k$ is the number of steps, and the LHS is now 0:
 
-$$k \leq | w_{0} - w_{*} |^{2}$$ the number of steps is less than or equal to the RHS.
+$$k \leq \lVert w_{0} - w_{*} \rVert^{2}$$
+
+The number of steps is less than or equal to the $\lVert w_{0} - w_{*} \rVert^{2}$.
 
 
 ## **Problem 15**
 
-If we have $n$ data points, where $n$ is an odd number and $\mathbb{P}\{Y=1\} = \mathbb{P}\{Y=0\} = \frac{1}{2}$ the true error is $\frac{1}{2}$ and the estimate of the error using the leave-one-out classifier is either $\frac{\frac{n+1}{2}}{n}$ or $\frac{\frac{n-1}{2}}{n}$ in averaging these two which are equally likely we get the true error $\frac{1}{2}$. If classes are imbalanced such $\mathbb{P}\{Y=1\} \ne \mathbb{P}\{Y=0\}$ the same approximation will hold in that the difference of the estimate does not change much when one observation is removed.
+*Part 1*
 
-This can be used to bound the expected risk of the perception classifier: $\mathbb{E}\Big[ R_{n}(g_{n-1}) \Big]$ is the number of updates made during the perception classifier. This is a aboudn because otherwise the $x_{i}$ is correctly classified by the algorithm and no update is made. So the estimation of the risk based on the leave one out estimator is the same as $M$ the number of iterations made by the preception althorithm. This $M$ is upper-bounded (Novikoff) by $(\frac{R}{\gamma})^{2}$
+The expected risk of the data-dependent leave-one-out classifier:
+
+$$\mathbb{E}\bigg\{ R_{n}^{D}(g_{n}) \bigg\} = \mathbb{E}\bigg\{ \frac{1}{n} \sum_{i=1}^{n} \mathbb{I}_{g_{n-1}(X_{i},D_{n,i}) \ne Y_{i}} \bigg\}$$
+
+The RHS is a random variable: it is the sum of the variations on the random data set being used to train the leave-one-out classifier. The law of iterated expectations shows this can be written as:
+
+$$\mathbb{E}\bigg\{ R_{n}^{D}(g_{n}) \bigg\} = \mathbb{E}\bigg\{ \mathbb{E} \{ R(g_{n-1}) | D \} \bigg\} = \mathbb{E} \{ R(g_{n-1}) \}$$
+
+*Part 2*
+
+$$\mathbb{E}\bigg\{ R_{n}^{D}(g_{n}) \bigg\} = \mathbb{E} \{ R(g_{n-1}) \}$$
+
+can be used to bound the expected risk of the perception classifier. The expected risk of the leave-one-out classifier times $n$ is the number of updates made during the perception classifier, (otherwise the $x_{i}$ in the iteration is correctly classified by the algorithm and no update is made). The estimation of the risk based on the leave one out estimator is the same as $M$ the number of iterations made by the preception althorithm. This $M$ is upper-bounded (Novikoff) by $(\frac{R}{\gamma})^{2}$, where R is the distance to the furthest point and gamma is the size of the margin. This is upperbounded by the number of steps bounded in Problem 14.
 
 ## **Problem 16**
 
@@ -121,11 +134,19 @@ $$
 
 *Solution Part 1:*
 
-Let $N_{n}$ be the number of $Y_{i} = 0$ in the sample. So $N_{n}$ is binomial $(n, 1-p)$ with $p$ the $P{Y=1}$.
+Let $N_{n}$ be the number of $Y_{i} = 0$ in the sample. So $N_{n}$ is binomial $(n, 1-p)$ with $p$ the $P\{Y=1\}$.
 
 $$\mathbb{E}(R(g_{n})) = p\mathbb{P}\bigg\{ N_{n} \geq \frac{n}{2} \bigg\} + (1-p)\mathbb{P}\bigg\{ N_{n} < \frac {n}{2} \bigg\} \to min(p, 1-p)$$
 
 *Solution Part 2:*
 
-The "worst" case data for the majority classifier is when $\mathbb{P}\{Y=1\} = \mathbb{P}\{Y=0\} = \frac{1}{2}$, in this case the expected risk is $\frac{1}{2}$. Assuming $n$ is odd, we can lower bound the sample variance for a given set of $n$ data points by minimizing the difference between the risk of the data and the expected risk as estimated by the leave-one-out classifier. This minimization of difference between our estimated risk and the average risk yields $Var(R_{n}^{D}(g_{n})) = \frac{1}{n^{2}}$ such that we can lower bound the variance by $\frac{c}{\sqrt{n}}$ with $c \leq \frac{1}{n}$
+Minimal variance of the leave-one-out classifier can be estimated when the true probability of either class is $\mathbb{P}\{Y=1\} = \mathbb{P}\{Y=0\} = \frac{1}{2}$ and the probability the data set comes near the true probabilty $\frac{n+1}{2}$ (given $n$ is odd). This probability can be represented as:
+
+$$\mathbb{P}\bigg\{ Bin \Big(n, \frac{1}{2}\Big) = \frac{n+1}{2} \bigg\}$$
+
+This probability is (assuming $n \geq 1$):
+
+$$= 2^{-n} {n \choose \frac{n+1}{2}}$$
+
+Which is always greater than $\frac{c}{\sqrt(n)}$ where c is some positive constant, say $\frac{1}{n+1}$.
 
