@@ -109,7 +109,7 @@ The expected risk of the data-dependent leave-one-out classifier:
 
 $$\mathbb{E}\bigg\{ R_{n}^{D}(g_{n}) \bigg\} = \mathbb{E}\bigg\{ \frac{1}{n} \sum_{i=1}^{n} \mathbb{I}_{g_{n-1}(X_{i},D_{n,i}) \ne Y_{i}} \bigg\}$$
 
-The RHS is a random variable: it is the sum of the variations on the random data set being used to train the leave-one-out classifier. The law of iterated expectations shows this can be written as:
+The RHS is a random variable: it is the sum of the variations on the random data set being used to train the leave-one-out classifier. The law of iterated expectations shows this can be written as (where $g_{n-1}$ is the leave-one-out classifier):
 
 $$\mathbb{E}\bigg\{ R_{n}^{D}(g_{n}) \bigg\} = \mathbb{E}\bigg\{ \mathbb{E} \{ R(g_{n-1}) | D \} \bigg\} = \mathbb{E} \{ R(g_{n-1}) \}$$
 
@@ -117,7 +117,7 @@ $$\mathbb{E}\bigg\{ R_{n}^{D}(g_{n}) \bigg\} = \mathbb{E}\bigg\{ \mathbb{E} \{ R
 
 $$\mathbb{E}\bigg\{ R_{n}^{D}(g_{n}) \bigg\} = \mathbb{E} \{ R(g_{n-1}) \}$$
 
-can be used to bound the expected risk of the perception classifier. The expected risk of the leave-one-out classifier times $n$ is the number of updates made during the perception classifier, (otherwise the $x_{i}$ in the iteration is correctly classified by the algorithm and no update is made). The estimation of the risk based on the leave one out estimator is the same as $M$ the number of iterations made by the preception althorithm. This $M$ is upper-bounded (Novikoff) by $(\frac{R}{\gamma})^{2}$, where R is the distance to the furthest point and gamma is the size of the margin. This is upperbounded by the number of steps bounded in Problem 14.
+If $M$ is the number of mistakes made by the perceptron classifier, it is equivalent to the number of times the leave one out classifier also makes a mistake. Since we can estimate the expected risk using the leave-one-out classifier and the number of iterations made by the perceptron classifier is upper-bounded by $(\frac{R}{\gamma})^{2}$ (Novikoff, 1962), we can bound the expected risk of the perceptron classifier by $\frac{M}{n}$
 
 ## **Problem 16**
 
@@ -136,17 +136,28 @@ $$
 
 Let $N_{n}$ be the number of $Y_{i} = 0$ in the sample. So $N_{n}$ is binomial $(n, 1-p)$ with $p$ the $P\{Y=1\}$.
 
-$$\mathbb{E}(R(g_{n})) = p\mathbb{P}\bigg\{ N_{n} \geq \frac{n}{2} \bigg\} + (1-p)\mathbb{P}\bigg\{ N_{n} < \frac {n}{2} \bigg\} \to min(p, 1-p)$$
+$$\mathbb{E}(R(g_{n})) = p\mathbb{P}\bigg\{ N_{n} \geq \frac{n}{2} \bigg\} + (1-p)\mathbb{P}\bigg\{ N_{n} < \frac {n}{2} \bigg\}$$
+
+(asymptotically this is $min(p, 1-p)$)
 
 *Solution Part 2:*
 
-Minimal variance of the leave-one-out classifier can be estimated when the true probability of either class is $\mathbb{P}\{Y=1\} = \mathbb{P}\{Y=0\} = \frac{1}{2}$ and the probability the data set comes near the true probabilty $\frac{n+1}{2}$ (given $n$ is odd). This probability can be represented as:
+Risk is binomial and so it's variance can be lower bounded by the expected value of the squared risk.
 
-$$\mathbb{P}\bigg\{ Bin \Big(n, \frac{1}{2}\Big) = \frac{n+1}{2} \bigg\}$$
+$$Var(R_{n}^{D}(g_{n})) = \mathbb{E}\{(R_{n}^{D})^{2}\} - \mathbb{E}\{R_{n}^{D}\}^{2}$$
 
-This probability is (assuming $n \geq 1$):
+$$\geq \mathbb{E}\{(R_{n}^{D})^{2}\}$$
 
-$$= 2^{-n} {n \choose \frac{n+1}{2}}$$
+The value of the risk for which this expectation is maximized is the expected value of the risk ($R_{n}^{D}(g_{n}) \sim Bin(n,p)$) when $p=\frac{1}{2}$ and the variance can be lower bounded when the expectated value of the risk 1.
 
-Which is always greater than $\frac{c}{\sqrt(n)}$ where c is some positive constant, say $\frac{1}{n+1}$.
+This is always greater than or equal to the probablity that just over half the data are 1's when we favor 0's.
 
+Risk being equal to 1 when $\mathbb{P}\{Y=1\} = \mathbb{P}\{Y=0\} = \frac{1}{2}$ which happens when the data $n$ is near as possible to (favoring the half which has realized number $\frac{n-1}{2}$) $\frac{1}{2}$ with probability:
+
+$$\mathbb{E}\{(R_{n}^{D})^{2}\} \geq \mathbb{P}\bigg\{Bin(n, \frac{1}{2}) = \frac{n+1}{2} \bigg\}$$
+
+$$= \frac{1}{2}^{n} {n \choose \frac{n+1}{2}}$$
+
+Using Stirling's approximation and that $n \approx n+1$:
+
+$$Var(R_{n}^{D}(g_{n})) \geq \frac{\sqrt{\frac{2}{\pi}}}{\sqrt{n}}$$
