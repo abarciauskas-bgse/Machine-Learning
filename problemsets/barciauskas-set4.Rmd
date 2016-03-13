@@ -1,0 +1,54 @@
+---
+title: Machine Learning Problemset 4
+author: Aimee Barciauskas
+date: 12 March 2016
+output: pdf_document
+---
+
+# Problem 17
+
+**Let $(x_{1}, y1), ..., (x_{n}, y_{n})$ be data in $\mathbb{R}^{d} \times \{-1,1\}$**. Suppose the data are *linearly seperable*...
+
+http://cs229.stanford.edu/notes/cs229-notes3.pdf
+http://www.cs.cmu.edu/~epxing/Class/10701-08s/recitation/svm.pdf
+
+Since the data are linearly seperable, we can define a separating hyperplane:
+
+$$\bigg\{ x : f(x) = w^{T}x = 0 \bigg\} where |w| = 1$$
+
+The seperating hyperplane returns a signed distance to the plane for each x, and classification is done according to the sign:
+
+$$f(x) : sgn [w^{T}x]$$
+
+The margin of this classifier is as stated in the problem:
+
+$$\gamma(w) = min_{i}\frac{y_{i}w^{T}x_{i}}{|w|}$$
+
+An optimal $f(x)$ is one which maximizes the margin $\gamma$, i.e.:
+
+$$\gamma* = max\gamma_{w, |w| = 1} s.t. y_{i}w^{T}x_{i} \geq \gamma$$
+
+The constratint on the norm of $w$, $|w| = 1$ can be removed when:
+
+$$\frac{y_{i}w^{T}x_{i}}{|w|} \geq \gamma$$
+
+and by setting $|w| = \frac{1}{\gamma}$ the maximazation optimization problem becomes a convex minimization problem of the form:
+
+$$min_{w}|w| s.t. y_{i}w^{T}x_{i} \geq 1$$
+
+PART B NEEDED
+
+# Problem 18
+ok
+
+# Problem 19
+
+# Problem 20
+
+http://www.cs.berkeley.edu/~jordan/courses/281B-spring04/lectures/lec5.ps
+
+PART B NEEDED
+
+# Problem 21
+
+NEEDED
