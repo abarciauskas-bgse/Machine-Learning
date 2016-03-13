@@ -5,6 +5,7 @@ date: 12 March 2016
 output: pdf_document
 ---
 
+------------
 # Problem 17
 
 **Let $(x_{1}, y1), ..., (x_{n}, y_{n})$ be data in $\mathbb{R}^{d} \times \{-1,1\}$**. Suppose the data are *linearly seperable*...
@@ -38,17 +39,154 @@ $$min_{w}|w| s.t. y_{i}w^{T}x_{i} \geq 1$$
 
 PART B NEEDED
 
+------------
 # Problem 18
-ok
 
+*Part 1*
+
+$$y_{n} \in \big\{-1, 1\big\}$$
+$$x_{n} \in \big\{0, 1\big\}$$
+
+Data are linearly seperable by the weight vector:
+
+$$w = (w_{0},...,w_{d})$$
+
+Being linearly seperable means, by definition, there exists such a $w^{T}x_{i} > 0$ whenever $y_{i} = 1$ and $w^{T}x_{i} \leq 0$ whenever $y_{i} = -1$
+
+By the statement of the problem, $w^{T}x_{i} > 0$ whenever at least one $x_{i,j} = 1$. The $w$ satisfying this is the $w$ where $w_{0}$ is $\big(-1,0\big)$ and all $w_{1} = ... = w_{d} = 1$:
+
+$$\bigg\{w : -1 < w_{0} < 0 and w_{1} = ... = w_{d} = 1\bigg\}$$
+
+So $w^{T}x$ will be greater than 0 where at least one $x_{i}$ is 1 and $w_{0}$ otherwise. The $x_{i}$'s nearest the $w$ vector are the $x_{i}$'s where all elements are zero and their counterparts: those with only one dimension being equal non-zero, i.e. the $x_{i}$'s satisifyiing:
+
+$$\sum_{m=1}^{d}x_{m,i} = 1 \text{ $d$ is the dimension of $x$}$$
+
+These two types of points define the location of the hyperplane. The margin maximizing the distance between between such $x_{i}$'s is where the margin equivalent for both these points:
+
+$$\frac{y_{j}w^{T}{x_{j}}{|w|} = \frac{y_{i}w^{T}{x_{i}}{|w|}$$
+
+Where $y_{j} = -1$, $y_{i} = 1$ and $\sum_{m=1}^{d}x_{m,j} = 0$, $\sum_{m=1}^{d}x_{m,i} = 1$
+
+To solve for the optimal $w*$, where we know all $w_{1} = ... = w_{d} = 1$ so we are just solving for $w_{0}$:
+
+$$w_{0} = -\frac{1}{2}$$
+
+Plugging this back into the equation for $\gamma$:
+
+$$\gamma*(w) = \frac{1}{2\sqrt(\frac{1}{4} + d)}$$
+
+
+*Part 2*
+
+$$w^{T}x > 0 \text{ when } \sum_{i} x_{i} > \frac{d}{2}$$
+
+$$w^{T}x = w_{0}^{*} + kw_{1,...,d}^{*} \text{ where $k$ is the number of non-zero elements of $x$ and $w*$ is the optimal weight vector}$$
+
+$$w^{T}x > 0 \text{ when } k \geq \frac{d+1}{2} \text{ and}$$
+
+$$w^{T}x < 0 \text{ when } k < \frac{d-1}{2}$$
+
+Say $-w_{0}^{*} = kw_{1,...,d}^{*}$ and we can set $w_{1,...,d}^{*} = 1$ and there are two scenarios:
+
+1. $w_{0}^{*} + \frac{d+1}{2} > 0 \text{ when } k \geq \frac{d+1}{2}$
+2. $w_{0}^{*} + \frac{d-1}{2} < 0 \text{ when } k < \frac{d-1}{2}$
+
+So the possible values of $w_{0}$ are:
+
+$$\frac{d-1}{2} < -w_{0}^{*} < \frac{d+1}{2}$$
+
+$x_{i}$'s nearest the classifying hyperplane, are those where:
+
+$$\sum_{m=1}^{d}x_{ij} = \frac{d-1}{2} \text{ or }$$
+$$\sum_{m=1}^{d}x_{ij} = \frac{d+1}{2}$$
+
+I.e.:
+
+$$y_{i} = 1, \sum_{i}x_{i} = \frac{d+1}{2}$$
+$$y_{j} = -1, \sum_{j}x_{j} = \frac{d-1}{2}$$
+
+$\gamma(w)$ is the same for all $x_{i}$ so:
+
+$$y_{i}w^{T}x_{i} = y_{j}w^{T}x_{j}$$
+
+Substituting $y_{i}, y_{j}$ with $-1,1$:
+
+$$w^{T}x_{i} = -w^{T}x_{j}$$
+
+$$w_{0} + \sum_{m=1}^{d}w_{m}x_{i,m} = - w_{0} - \sum_{m=1}^{d}w_{m}x_{j,m}$$
+
+$$w_{0} + \frac{d+1}{2} = - w_{0} - \frac{d-1}{2}$$
+
+$$w_{0} = -\frac{d}{2}$$
+
+Plugging this into the equation for $\gamma$:
+
+$$\gamma(w) = \frac{w_{0} + \frac{d+1}{2}}{sqrt(w_{0}^{2} + d}$$
+$$\gamma(w) = \frac{1}{2\sqrt{\frac{d^{2}}{4} + d}}$$
+
+------------
 # Problem 19
 
+*Part 1*
+
+$$K(x,y) = \big \langle \phi(x),\phi(y) \big \rangle$$
+
+where:
+
+$$\phi(x)_{n} = \frac{1}{\sqrt{n!}}x^{n}e^{\frac{-x^{2}}{2}}$$
+
+$$\big \langle \phi(x),\phi(y) \big \rangle = \sum_{n=0}^{\infty} \frac{1}{\sqrt{n!}}x^{n}e^{\frac{-x^{2}}{2}} \frac{1}{\sqrt{n!}}y^{n}e^{\frac{-y^{2}}{2}}$$
+
+Simplifying and using that $\sum_{n=0}^{\infty}\frac{x^{n}}{n!} = e^{x}$:
+
+$$= e^{xy - \frac{1}{2}(x^{2} + y^{2})}$$
+
+Multiply the exponent by $\frac{2}{2}$:
+
+$$= e^{-\frac{(x-y)^{2}}{2}}$$
+
+*Is this the gaussian kernel?*
+
+*Part 2*
+
+NEEDED: Generalize to $$\mathbb{R}^{d}$$
+
+------------
 # Problem 20
 
-http://www.cs.berkeley.edu/~jordan/courses/281B-spring04/lectures/lec5.ps
+*Part 1*
 
-PART B NEEDED
+$$K(x,y) = \big \langle \phi(x),\phi(y) \big \rangle$$
+$$= \big \langle \binom(\phi_{1}(x),\phi_{2}(x)), \binom(\phi_{1}(y),\phi_{2}(y)) \big \rangle$$
+$$= \big \langle \phi_{1}(x), \phi_{1}(y) \big \rangle + \big \langle \phi_{2}(x), \phi_{2}(y) \big \rangle$$
+$$= K_{1}(x,y) + K_{2}(x,y)$$
 
+*Part 2*
+
+$$K(x,y) = \phi(x)^{T}\phi(y)$$
+$$= \phi_{1}(x)^{T}\phi_{1}(y)\phi_{2}(x)^{T}\phi_{2}(y)$$
+$$= \big(\phi_{1}(x)\phi_{2}(x)\big)^{T}\big(\phi_{1}(y)\phi_{2}(y)\big)$$
+$$= K_{1}(x,y)K_{2}(x,y)$$
+
+------------
 # Problem 21
 
-NEEDED
+*Part 1*
+
+There are $2^{m}$ possible substrings $s$, so we define the dimension to be $\mu = 2^{m}$
+
+$$\phi(x)_{\mu} = \sum_{i=1}^{\mu} \mathbb{I}_{s_{i} substring of x}$$
+
+$$\big \langle \phi(x)_{\mu},\phi_{\mu}(y) \big \rangle = K(x,y)$$
+
+$$= \sum_{i=1}^{2^{m}} \mathbb{I}_{s_{i} \in x} \mathbb{I}_{s_{i} \in y}$$
+$$= \sum_{i=1}^{2^{m}} \mathbb{I}_{s_{i} \in x,y}$$
+$$= \sum_{s_{i} \in {0,1}^{m}} \mathbb{I}_{s_{i} \in x,y}$$
+
+*Part 2* 
+
+Let $J$ be the set of all possible $s$, the magnitude of $J$ is the dimension of the $\mathcal{H}$ the hilbert space of this kernel function, that is the dimension of the Hilbert space of the string kernel is $2^{m}$, i.e.:
+
+$$\phi(x) = \mathbb{R}^{n} \to \mathbb{R}^{\mu}$$
+
+
