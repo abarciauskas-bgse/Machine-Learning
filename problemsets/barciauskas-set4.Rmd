@@ -5,13 +5,10 @@ date: 12 March 2016
 output: pdf_document
 ---
 
-------------
+
 # Problem 17
 
 **Let $(x_{1}, y1), ..., (x_{n}, y_{n})$ be data in $\mathbb{R}^{d} \times \{-1,1\}$**. Suppose the data are *linearly seperable*...
-
-http://cs229.stanford.edu/notes/cs229-notes3.pdf
-http://www.cs.cmu.edu/~epxing/Class/10701-08s/recitation/svm.pdf
 
 Since the data are linearly seperable, we can define a separating hyperplane:
 
@@ -19,11 +16,11 @@ $$\bigg\{ x : f(x) = w^{T}x = 0 \bigg\} where |w| = 1$$
 
 The seperating hyperplane returns a signed distance to the plane for each x, and classification is done according to the sign:
 
-$$f(x) : sgn [w^{T}x]$$
+$$f(x) : sgn \big[w^{T}x\big]$$
 
 The margin of this classifier is as stated in the problem:
 
-$$\gamma(w) = min_{i}\frac{y_{i}w^{T}x_{i}}{|w|}$$
+$$\gamma(w) = min_{i} \frac{y_{i}w^{T}x_{i}}{|w|}$$
 
 An optimal $f(x)$ is one which maximizes the margin $\gamma$, i.e.:
 
@@ -31,15 +28,21 @@ $$\gamma* = max\gamma_{w, |w| = 1} s.t. y_{i}w^{T}x_{i} \geq \gamma$$
 
 The constratint on the norm of $w$, $|w| = 1$ can be removed when:
 
-$$\frac{y_{i}w^{T}x_{i}}{|w|} \geq \gamma$$
+$$ \frac{y_{i}w^{T}x_{i}}{|w|} \geq \gamma$$
 
 and by setting $|w| = \frac{1}{\gamma}$ the maximazation optimization problem becomes a convex minimization problem of the form:
 
 $$min_{w}|w| s.t. y_{i}w^{T}x_{i} \geq 1$$
 
-PART B NEEDED
+*Part 2*
 
-------------
+HELP
+
+$w$ is a linear combination of all the points that are at the margin distance so w is a linear combination of these 2.
+
+$$w = \sum_{i} \gamma_{i}w$$
+
+
 # Problem 18
 
 *Part 1*
@@ -63,17 +66,17 @@ $$\sum_{m=1}^{d}x_{m,i} = 1 \text{ $d$ is the dimension of $x$}$$
 
 These two types of points define the location of the hyperplane. The margin maximizing the distance between between such $x_{i}$'s is where the margin equivalent for both these points:
 
-$$\frac{y_{j}w^{T}{x_{j}}{|w|} = \frac{y_{i}w^{T}{x_{i}}{|w|}$$
+$$\frac{y_{j}w^{T}x_{j}}{|w|} = \frac{y_{i}w^{T}x_{i}}{|w|}$$
 
 Where $y_{j} = -1$, $y_{i} = 1$ and $\sum_{m=1}^{d}x_{m,j} = 0$, $\sum_{m=1}^{d}x_{m,i} = 1$
 
 To solve for the optimal $w*$, where we know all $w_{1} = ... = w_{d} = 1$ so we are just solving for $w_{0}$:
 
-$$w_{0} = -\frac{1}{2}$$
+$$w_{0} = - \frac{1}{2}$$
 
 Plugging this back into the equation for $\gamma$:
 
-$$\gamma*(w) = \frac{1}{2\sqrt(\frac{1}{4} + d)}$$
+$$\gamma*(w) = \frac{1}{2\sqrt{\frac{1}{4} + d}}$$
 
 
 *Part 2*
@@ -93,7 +96,7 @@ Say $-w_{0}^{*} = kw_{1,...,d}^{*}$ and we can set $w_{1,...,d}^{*} = 1$ and the
 
 So the possible values of $w_{0}$ are:
 
-$$\frac{d-1}{2} < -w_{0}^{*} < \frac{d+1}{2}$$
+$$ \frac{d-1}{2} < -w_{0}^{*} < \frac{d+1}{2}$$
 
 $x_{i}$'s nearest the classifying hyperplane, are those where:
 
@@ -117,14 +120,14 @@ $$w_{0} + \sum_{m=1}^{d}w_{m}x_{i,m} = - w_{0} - \sum_{m=1}^{d}w_{m}x_{j,m}$$
 
 $$w_{0} + \frac{d+1}{2} = - w_{0} - \frac{d-1}{2}$$
 
-$$w_{0} = -\frac{d}{2}$$
+$$w_{0} = - \frac{d}{2}$$
 
 Plugging this into the equation for $\gamma$:
 
-$$\gamma(w) = \frac{w_{0} + \frac{d+1}{2}}{sqrt(w_{0}^{2} + d}$$
-$$\gamma(w) = \frac{1}{2\sqrt{\frac{d^{2}}{4} + d}}$$
+$$\gamma(w) = \frac{w_{0} + \frac{d+1}{2}}{\sqrt{w_{0}^{2} + d}}$$
+$$\gamma(w) = \frac{1}{2 \sqrt{\frac{d^{2}}{4} + d} }$$
 
-------------
+
 # Problem 19
 
 *Part 1*
@@ -133,25 +136,35 @@ $$K(x,y) = \big \langle \phi(x),\phi(y) \big \rangle$$
 
 where:
 
-$$\phi(x)_{n} = \frac{1}{\sqrt{n!}}x^{n}e^{\frac{-x^{2}}{2}}$$
+$$\phi(x)_{n} = \frac{1}{\sqrt{n!}}x^{n}e^{ \frac{-x^{2}}{2}}$$
 
-$$\big \langle \phi(x),\phi(y) \big \rangle = \sum_{n=0}^{\infty} \frac{1}{\sqrt{n!}}x^{n}e^{\frac{-x^{2}}{2}} \frac{1}{\sqrt{n!}}y^{n}e^{\frac{-y^{2}}{2}}$$
+$$\big \langle \phi(x),\phi(y) \big \rangle = \sum_{n=0}^{\infty} \frac{1}{\sqrt{n!}}x^{n}e^{\frac{-x^{2}}{2}}\frac{1}{\sqrt{n!}}y^{n}e^{ \frac{-y^{2}}{2}}$$
 
-Simplifying and using that $\sum_{n=0}^{\infty}\frac{x^{n}}{n!} = e^{x}$:
+Simplifying and using that $\sum_{n=0}^{\infty} \frac{x^{n}}{n!} = e^{x}$:
 
 $$= e^{xy - \frac{1}{2}(x^{2} + y^{2})}$$
 
 Multiply the exponent by $\frac{2}{2}$:
 
-$$= e^{-\frac{(x-y)^{2}}{2}}$$
+$$= e^{- \frac{(x-y)^{2}}{2}}$$
 
 *Is this the gaussian kernel?*
 
 *Part 2*
 
-NEEDED: Generalize to $$\mathbb{R}^{d}$$
+Generalize to $$\mathbb{R}^{d}$$
 
-------------
+$$=\sum_{i=1}^{\infty} \frac{1}{n!}(\sqrt{(x^{T}x)}\sqrt{y^{T}y})^{n}exp(- \frac{1}{2}(x^{T}x)- \frac{1}{2}(y^{T}y))$$
+
+$$= exp(sqrt{(x^{T}xy^{T}y)} - \frac{1}{2}x^{T}{x}- \frac{1}{2}y^{T}y)$$
+
+$$= exp(x^{T}y - \frac{1}{2}x^{T}{x} - \frac{1}{2}y^{T}y)$$
+
+$$= exp( \frac{2x^{T}y - x^{T}{x} - y^{T}y}{2})$$
+
+$$= exp(- \frac{(norm(x-y))^{2}}{2})$$
+
+
 # Problem 20
 
 *Part 1*
@@ -168,7 +181,7 @@ $$= \phi_{1}(x)^{T}\phi_{1}(y)\phi_{2}(x)^{T}\phi_{2}(y)$$
 $$= \big(\phi_{1}(x)\phi_{2}(x)\big)^{T}\big(\phi_{1}(y)\phi_{2}(y)\big)$$
 $$= K_{1}(x,y)K_{2}(x,y)$$
 
-------------
+
 # Problem 21
 
 *Part 1*
