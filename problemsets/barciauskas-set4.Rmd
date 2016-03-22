@@ -1,7 +1,7 @@
 ---
 title: Machine Learning Problemset 4
 author: Aimee Barciauskas
-date: 12 March 2016
+date: 18 March 2016
 output: pdf_document
 ---
 
@@ -204,12 +204,11 @@ $$\phi(x)_{\mu} = \sum_{i=1}^{\mu} \mathbb{I}_{s_{i} \text{ substring of } x}$$
 
 The kernel function for 2 strings is:
 
-
-$$\big \langle \phi(x)_{\mu},\phi_{\mu}(y) \big \rangle = K(x,y)$$
+$$\big \langle \phi_{\mu}(x),\phi_{\mu}(y) \big \rangle = K(x,y)$$
 
 $$= \sum_{i=1}^{2^{m}} \mathbb{I}_{s_{i} \in x} \mathbb{I}_{s_{i} \in y}$$
 $$= \sum_{i=1}^{2^{m}} \mathbb{I}_{s_{i} \in x,y}$$
-$$= \sum_{s_{i} \in {0,1}^{m}} \mathbb{I}_{s_{i} \in x,y}$$
+$$= \sum_{s_{i} \in \{0,1\}^{m}} \mathbb{I}_{s_{i} \in x,y}$$
 
 *Solution Part 2* 
 
