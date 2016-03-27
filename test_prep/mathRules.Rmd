@@ -1,0 +1,76 @@
+---
+title: Math Rules for Machine Learning
+author: Aimee Barciauskas
+date: 29 March 2016
+output: pdf_document
+---
+
+# Misc
+
+* $min(a,b) = \frac{a+b - \left| a - b \right|}{2}$
+* $1+x \leq e^{x}$
+* $e^{\lambda x} \leq xe^{\lambda} + (1 - x)$
+
+# Probabilities
+
+* $\mathbb{P}\big\{ Bin(n,p) = k \big\} = {n \choose k}p^{k}(1-p)^{n-k}$
+* **Union of Events Bound**: $\mathbb{P} \big( \bigcup\limits_{j} A_{j} \big) \leq \sum\limits_{j}\mathbb{P}(A_{j})$
+
+# Expected Values
+
+* $\mathbb{E}[X] = \int x f(x) dx, \text{ $X$ admits a pdf $f(x)$}$
+* **Linearity of expectation**: $\mathbb{E}(X) = \frac{1}{n}\sum_{i}^{n} X_{i,n-1}$
+    * Linearity of expectation is the property that the expected value of the sum of random variables is equal to the sum of their individual expected values, regardless of if they are independent.
+* **Identically Distributed**: expected value of a random variable is equal to the average of identically distributed random draws: $\frac{1}{n}\sum X_{i} = \mathbb{E} X$
+* $Var(X) = \mathbb{E}\big[ (X-\mathbb{E}[X])^{2} \big]$
+
+# Inequalities
+
+* **Markov**: $\mathbb{P}\big\{X \geq t \big\} \leq \frac{\mathbb{E}[X]}{t}$
+* **Chebyshev**: $\mathbb{P}\big\{ \left| X - \mathbb{E}[X] \right| \big\} \leq \frac{var(X)}{t^{2}}$
+    * Reveals that typical deviations from the expected value are of the order $\frac{\sigma}{\sqrt(n)}$
+    * $\mathbb{P}\big\{ \left| X - \mathbb{E}[X] \right| \geq k\sigma \big\} \leq \frac{1}{k^{2}}$
+* **Chernoff**: $\mathbb{P}\big\{ X \geq a\big\} \leq \frac{\mathbb{E}[e^{\lambda X}]}{e^{\lambda a}}$
+    * When $X$ is a sum of $n$ random variables the RHS $= \frac{\mathbb{E} \Big[ \prod_{i=1}^{n} e^{\lambda X_{i}} \Big]}{e^{\lambda a}}$
+* **Jensen's Inequality**: $\phi(\mathbb{E}[X]) \leq \mathbb{E}[\phi(X)]$
+    * Used when bounding the expected value of an empirical frequency from it's expectation (Lecture 4, slide 2)
+* *Problem 16 Solution*: $\mathbb{P}\bigg\{X - \mathbb{E}X \geq nx \bigg\} \geq e^{-nx^{2}}$
+* **Cauchy-Schwarz**: $|\big \langle x, y \big \rangle| \leq \|x\| \dot \|y\|$
+
+# VC dimensions and shatter coefficients
+
+*In general, to prove the VC dimension of a class $\mathcal{A}$ it is sufficient to show $k$ is the VC dimension if $k+1$ points can be shattered
+
+* $\mathcal{A}$ is a class of sets with VC dimension $V_{\mathcal{A}}$, then for every $n$:
+  $s(\mathcal{A},n) \leq \sum\limits_{i=1}^{V_{\mathcal{A}}} {n \choose i}$ (Theorem 13.2)
+
+* For all $n > 2V$, $s(\mathcal{A}, n) \leq \big(\frac{en}{V_{\mathcal{A}}}\big)^{V_{\mathcal{A}}}$
+* If $\mathcal{A}$ contains finitely many sets, then $V_{\mathcal{A}} \leq log_{2}\left| \mathcal{A} \right|$ and $s(\mathcal{A},n) \leq \left| \mathcal{A} \right|$ for every $n$ (Theorem 13.6)
+    * Proof: The first inequality follows from the fact that at least $2^{n}$ sets are necessary to shatter $n$ points. The second inequality is trivial.
+* $\mathcal{A}$ is set of all half-lines $(-\infty,x]$: $s(\mathcal(A), 2) = 3 < 2$, so $V_{\mathcal{A}} = 1$ and $s(\mathcal{A}, n) = n + 1 = {n \choose 0} + {n \choose 1}$
+    * Proof: Any 2 different points $z_{1} < z_{2}$, there is no set of the form that contains $z_{2}$ and not $z_{1}$
+* $\mathcal{A}$ is set of all half-intervals, $V_{\mathcal{A}} = 2$ and $s(\mathcal{A},n) = \frac{n(n+1)}{2} + 1$
+    * Proof: To see that the vc dimension is 2, observe that if we fix 3 different points in $\mathcal{R}$, then there is no interval that does not contain the middle point but does contain the other 2. The shatter coefficient can be calculated by counting that there are at most $n - k + 1$ sets in A intersection of x1,...,x_{n} such that the absolutve number is k, for $k = 1,...,n$and one set where this is 0.
+* In $\mathcal{R}^{d}$:
+    * half-lines: $V_{\mathcal{A}} = d$
+    * all rectangles: $V_{\mathcal{A}} = 2d$
+* $\mathcal{A}$ set of halfspaces in $\mathcal{R}^{d}$ of the form $\{x : ax \geq b\}$, $V_{\mathcal{A}} = d+1$ and $s(\mathcal{A},n) = 2\sum\limits_{i=0}^{d} {n-1 \choose i} \leq 2(n-1)^{d} + 2$ (Corollary 13.1)
+    * Proof: If we take G to be the linear space spanned by $d$ functions $x^{(d)}$ and the $d+1$ function $= 1$, where $x^{(d)}$ is the d-th component of $x$
+
+**Theorem 13.9**
+
+*Let $\mathcal{G}$ be a finite-dimensional vector space of real functions on $\mathcal{R}^{d}$. The class of sets:*
+
+$$\mathcal{A} = {{x : g(x) \geq 0} : g \in G}$$
+
+*has VC dimension $V_{\mathcal{A}} \leq r$, where $r$ is the dimension of $G$
+
+The class of sets of this form have:
+
+$$s(\mathcal{A},n) \leq \sum\limits_{i=0}^{r} {n \choose i}$$
+
+In many cases it is possible to get sharper estimates, let $\mathcal{G}$ be the linear space of functions spanned by some fixed functions $\psi_{1}, ..., \psi_{r}$, if every r-element subset is linearly independent, then the n-th shatter coefficient is $\mathcal{A} = \{\{x : g(x) \geq 0\} : g \in \mathcal{G}\}$ actually equals:
+
+$$s(\mathcal{A},n) = 2 \sum\limits_{i=0}^{r-1} {n-1 \choose i}$$
+
+

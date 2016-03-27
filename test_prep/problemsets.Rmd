@@ -1,0 +1,122 @@
+---
+title: Machine Learning Problem Sets
+author: Aimee Barciauskas
+date: 29 March 2016
+output: pdf_document
+---
+
+# Set 1
+
+## Problem 1: Determine the Bayes Risk using class-conditional probabilities
+
+$R^{*} = min(\eta(x), 1-\eta(x))$
+
+* Use: $\eta(x) = \frac{\mathbb{P}\{Y=1\}{f_{1}(x)}}{f(x)}, \text{ where $f_{1}(x)$ is the conditional distribution of $x$ given $Y = 1$}$
+* Substitute prior probabilities, remove normalizing $f(x)$
+
+## Problem 2: Determine the Bayes Classifier using class-conditional probabilities
+
+$$
+g^{*}(x) =
+\left\{
+  \begin{array}{ll}
+    1  & \mbox{if } q_{1}f_{1} > q_{0}f_{0} \\
+    0 & \mbox{otherwise }
+  \end{array}
+\right.
+$$
+
+* Substituted $f_{1}$ and $f_{0}$ directly, reduce to find when the inequality holds
+
+## Problem 3 and 4: Determine a function which is the optimal classifier for a given loss function
+
+* The function minimizes the expected loss: $\mathbb{E} [\ell(y,y')] = \int \ell(y,y') p(y|x) dy$
+    * Take derivative wrt to function $y'$, set equal to 0 and solve for $y'$
+* Show that for any alternative function, the expected loss is greater than or equal to the loss of the function.
+
+## Problem 5: Show the probability the distance of the k-nearest neighbors is 0 goes to 1 as n goes to infinity.
+
+* Show the probability that the distance is greater than epsilon goes to 0:
+    1. Take the expected value of the probability wrt $X$
+    2. Replace the probability expression with it's binomial expression: the probability that $n$ samples are not in the ball is less than $k$
+    3. This is less than or equal to the unconditional probability
+    4. Solve the probability using the expression for the probability of a binomial:
+
+    $\mathbb{P} \big\{ Bin(n, q) < k \big\} = \sum\limits_{i=1}^{k-1} {n choose i} q^{k} (1-q)^{n-k}$
+
+    5. This expression goes to zero with $n \to \infty$
+
+## Problem 6: Show $\mathbb{E}[R(g)] > \frac{1}{4}$ even when $R^{*} = 0$
+
+* For 1-NN: Show the probability that nothing falls in the $X_{i}$'s "bucket" is greater than $\frac{1}{4}$
+    * e.g. $\mathbb{P}\big\{ Bin(n, \frac{1}{m} \big\} \geq 2$
+
+
+# Set 2
+
+## Problem 7: Calculate $R^{*}$, $R_{1-NN}$, $R_{3-NN}$
+
+* Expand $R$ as a function of $\eta(x)$ and take expected value (e.g. integrate over possible values of $eta(x)$)
+
+## Problem 8: Show that the probability a sum of random indpendent variables taking values in $[0,1]$ is greater than $t$ is bounded by a complicated function of it's expected value and $t$
+
+1. Use Chernoff to rewrite in terms of expectations and a product over $X_{i}$'s
+2. Use convexity of $e^{\lambda x}$ to take $x$ out of exponent
+3. Bring through expected value of $X_{i}$
+4. Use $1+x \leq e^{x}$ to put expected value back in exponent, now can use sum of expected value in exponent (which will just be the expected value)
+5. This will be some exponential function, which will be minimized when the exponent is minimized. So take derivate and set equal to lambda. Put lambda back in and reduce.
+
+## Problem 9: Show the deviation from $R^{*}$ of $R(g)$
+
+1. Restate $R$ in terms of the expected risk, i.e.: probability of each type of error by the probability of each class $\eta(x)$, $1 - \eta(x)$
+2. Is it possible to simplify to an $R^{*}$ term? Now we have an expression for the deviance from $R^{*}$
+3. Use Hoeffding to replace probabilty a random variable deviates from it's expected value by more than some expression, say $t$, is $\leq e^{-2nt^{2}}$
+
+## Problem 10: Prove "structural" results of some sets (e.g. Rademacher averages)
+
+* Rewrite structural result in terms of full expression, note if it's an inquality and there is some supremum of infinum involved it could be trivial
+
+## Problem 11: Determine the n-th shatter coefficient
+
+$s(\mathcal{A},n) = max_{(z_{1},...,z_{n}) \in \{\mathcal{R}^{d}\}} N_{\mathcal{A}}(z_{1},...,z_{n}) \text{ where $N$ is the number of different sets which in union compose $\mathcal{A}$}$
+
+*The shatter coefficient is the maximal number of different subsets of n points that can be picked out by the class of sets $\mathcal{A}$*
+
+# Set 3
+
+## Problem 12: What is the VC dimension of $f(x)$
+
+* When infinite, it suffices to prove that for any $n$ there exist a set $x_{1},...,x_{n}$ such that these points may be shattered by $f(x)$
+    1. Define the sequence of $x_{1},...,x_{n}$ (e.g. $2^{-n}$)
+    2. Show that no matter what the assignment of $(y_{1}, ..., y_{n})$, we can define a classification function of $f(x)$ which assigns them to that set of $\{0,1\}$
+
+## Problem 13: Upper bound the VC dimension of the union of $k$ classes, each having VC dimension of at least $V$
+
+1. By sauer's lemma, we know the shatter coefficient of each class is bounded above by $(n+1)^{V}$, for the union we know this is again upper-bounded by $k(n+1)^{V}$
+2. The VC dimension must be less than $2^{n}$, so we can reduce to an expression for $n$: $n > ...$
+3. $n < n+1$: use the hint that with $a \geq 1$ and $b > 0$, if $x \geq 4 a log(2a) + 2b$ then $x \geq a log(x) + b$
+4. Subtract 1 from both sides, VC dimension cannot be greater than that value
+
+## Problem 14: Prove the perceptron algorithm converges at a rate dependent on the distance of the initial weight vector to the optimal (squared).
+
+1. Re-express and expand $|w_{t} - w_{*}|^{2}$ using $w_{t} = w_{t-1} + \frac{Y_{t}X_{t}}{|X_{t}|}$
+2. Simplify the expression taking note of $w_{t-1}^{T}X_{t}Y_{t} \leq 0$ and $w_{*}^{T}X_{t}Y_{t} \geq 1$
+3. Step backward in time to notice that for all values of $t$: $|w_{t} - w_{*}|^{2} \leq |w_{t-1} - w_{*}|^{2} - 1$
+
+## Problem 15: Derive a bound for the expected risk of the perceptron algorithm using the leave one out estimator
+
+1. The expected risk can be estimated by an average of the risk of $n$ leave-one-out classifiers
+2. We can use this to estimate the risk of perceptron using the rate of convergence defined in problem 14, given that we know how many times the algorithm made a mistake, which is in effect one instance of the $n$ leave-one-out classifiers.
+
+## Problem 16: What is the expected risk of the majority classifier?
+
+1. Re-express the expected value of the risk as the probability that the majority says 1 and the true value is 0 plus the complement.
+2. Re-express the probabilities in terms of binomials in n and p
+
+[REVIEW ME]
+
+# Set 4
+
+
+
+

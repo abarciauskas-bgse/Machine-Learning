@@ -1,0 +1,42 @@
+---
+title: Machine Learning Topic 1
+subtitle: Introduction and Binary Classification
+author: Aimee Barciauskas
+date: 29 March 2016
+output: pdf_document
+---
+
+# Binary Classification
+
+* Definitions $\mu$ and $\eta$: *slide 4*
+* Definition of $R(g)$, as function of expected loss: *slide 5*
+* Definition of **Bayes Classifier** $g^{*}(x)$: *slide 5*
+* Bayes Classifier Theorem: *bottom of slide 5*
+* Proof Bayes classifier is optimal: *slide 6*
+* Definition of **plug-in classifier**: *slide 7*
+* Data-based classifier and it's risk: *slide 8*
+* Consistency, universal and strong: *slide 9*
+* $\bar{R}$: best risk of family, $\hat{R_{n}}$: empirical risk, both being used to bound $R(g_{n})$
+
+# Additional and Alternative Definitions
+
+$\eta(x) = \frac{\mathbb{P}\{Y=1\}{f_{1}(x)}}{f(x)}, \text{ where $f_{1}(x)$ is the conditional distribution of $x$ given $Y = 1$}$
+
+$f(x|Y=1) = \frac{f(x)\mathbb{P}(Y = 1 | X = x)}{\mathbb{P}(Y=1)}$
+
+$\mathbb{P}\{Y = 1\} = \mathbb{E}[\eta(x)]$
+
+# Error Estimation
+
+#### Error-counting estimator:####
+
+(8.1 of Book)
+
+Given, $m$ is the testing sequence:
+
+$$\hat{L_{n,m}} = \frac{1}{m} \sum\limits_{j=1}^{m} \mathbb{1}_{g_{n}(X_{n+j}) \neq Y_{n+j}}$$
+
+Clearly unbiased: $\mathbb{E} \big\{ \hat{L_{n,m}} \| D_{n} \big\} = L_{n}$
+
+The conditional distribution of $\hat{L_{n,m}}$ given $D_{n}$ is binomial with paramters $m$ and $L_{n}$
+

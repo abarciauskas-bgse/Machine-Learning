@@ -1,0 +1,51 @@
+---
+title: Machine Learning Topic 2
+subtitle: The Nearest Neighbor Rule
+author: Aimee Barciauskas
+date: 29 March 2016
+output: pdf_document
+---
+
+# Nearest Neighbors
+
+* Definition of **distance**: *slide 1*
+* Risk of Nearest Neighbor: *slide 3*
+* Asymptotic Probability of Error Theorem and Proof: *slide 4*
+* K-Nearest Neighbor Definition and formula for asymptotic risk: *slide 5-6*
+* Theorem of Universal Consistency of $k-NN$: *slide 7*
+* Partitioning Classifier: *slide 7-8*
+* Curse of dimensionality for partitioning classifier: *slide 8*
+
+## Additional / Alternative Definitions
+
+$\mathbb{I}_{g_{k}(X) = 0, Y = 1} = \mathbb{P}\big\{ Bin(k, \eta(x)) < \frac{k}{2} | X \big\}$
+
+
+## Nearest Neighbor Theorem
+
+If $X_{n}'(X)$ are the $k$ nearest neighbors of $X$ from the training set $X_{n}$ ($X_{1},...,X_{n}$) are i.i.d in a seperable metrix space), then: $$ X_{n}' \to X$$
+
+In other words, they are "close" to $X$ in a sense that they are asymptotically co-located.
+
+[Nearest Neighbor Classifiers Notes (Vittorio, Columbia)](http://www.ee.columbia.edu/~vittorio/lecture8.pdf)
+
+## Proof of Nearest Neighbor Theorem:
+
+To prove the theorem, we prove the probability that the converse happens goes to zero exponentially fast.
+
+We define "good" points as those with positive probabaility that they fall in $S_{x}(\delta)$ centered at $x$ with radius $\delta$, e.g.: $\forall \delta > 0 \text{, } \mathbb{P}\{S_{x}(\delta)\} > 0$
+
+Since the training points are independent, the probabiltiy that all training points lie outside the $S_{x}(\delta)$ is the probability of each individual training point lies outside $S_{x}(\delta)$, which is the $n-th$ power of the individual probability:
+
+Formally:
+
+$\newline$
+$\mathbb{P}\big\{d(X_{n}'(x), x) > 0\big\} = \mathbb{P}\big\{X_{n}'(x) \notin S_{x}(r) \big\} = \big(1 - \mathbb{P}\{ S_{x}(\delta)\}\big)^{n} \to 0$
+
+
+## Rate of Convergence to $R^{*}$
+
+Depends on distribution (*slide 4a*)
+
+$\newline \mathbb{P}\{Bin(n,\frac{1}{2} = 0 or n\} = 2^{-n} + 2^{-n}, \text{ probability there is not at least one data point in each of two disjoint buckets}$
+

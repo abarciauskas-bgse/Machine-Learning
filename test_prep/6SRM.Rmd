@@ -1,0 +1,16 @@
+---
+title: Machine Learning Topic 6
+subtitle: Structural Risk Minimization & Complexity Regularization
+author: Aimee Barciauskas
+date: 29 March 2016
+output: pdf_document
+---
+
+How do we choose a class of classifier? Approximation and Estimation errors are in conflict.
+
+* Definition **estimation** and **approximation errors**: *slide 1*
+* Comparing classifiers using the VC dimension: *slide 2*
+  * *My example*: Select a $k$ for $k-nn$ for which the true risk of the data-based classifier and it's empirical risk are minimal. *How can we estimate the true risk? LOO?*
+* **Minimize empirical error with regularization term**: *slide 2*
+* Bound of the expected value of the data based classifer from the true risk: *slide 3*
+* Upper bund of the estimation error: *slide 3*

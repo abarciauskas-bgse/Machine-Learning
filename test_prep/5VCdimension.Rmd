@@ -1,0 +1,11 @@
+---
+title: Machine Learning Topic 5
+subtitle: VC Dimension
+author: Aimee Barciauskas
+date: 29 March 2016
+output: pdf_document
+---
+
+* Proof VC dimension $V_{\mathcal{A}} \leq r$ where $r$ is a set of feature mappings: *slide 1 - 2*
+* Examples: *slide 3*
+* Structural results of shatter coefficients of these higher-d classes: *slide 4*
