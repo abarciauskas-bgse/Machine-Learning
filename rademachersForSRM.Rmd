@@ -1,0 +1,182 @@
+---
+title: "Using Rademacher Averages for Structural Risk Minimization"
+author: "Aimee Barciauskas"
+date: "March 29, 2016"
+output: html_document
+---
+
+Rademacher averages can be used to bound the estimation error from the minimum in a class of classifiers. This helps us as machine learning practitioners to answer the question, what is the maximum deviation of the true risk of the our data-based classifier from the minimum in its class.
+
+To study Rademacher averages in practice, below is a most trivial example. Using the half-line classifier and the interval classifier in $\mathbb{R}^{d}$ for $n = 3$, the process is as follows:
+
+1. Generate a random sample of x's in $\mathbb{R}$ which represent the $X_{n}$ - that is the training data and a random selection of classes for those x's - "the training set classes".
+2. For each class of classifiers (denoted $\mathcal{C}$ below, here all half-lines and intervals), enumerate all the sets of classes possible for each class (e.g. the class's shatter coefficient). For half-lines, the shatter coefficient is $n+1$ and for intervals it is $\frac{n(n+1)}{2} + 1$. In this example, with $n=3$, there are 4 sets in $\{1,-1\}$ for the half-line classifier and 7 sets for the interval classifier.
+3. Enumerate the mistakes made on the "training set classes" by each classifier in each class.
+4. Estimate the rademacher average by simulation (Law of Large Numbers)
+
+### 1. Generate the "training sample"
+
+Here, we generate random samples in $\mathbb{R}^{d}$
+
+```{r}
+n <- 3
+# In the real world, this would be our training data, but here it is simulated for demonstration
+xs <- runif(n)
+xs <- xs[order(xs)]
+# "actual" y's
+irl.ys <- ifelse(rbinom(3, 1, 0.5) == 1, 1, -1)
+```
+
+### 2. Enumerate all the sets of classes possible for each class:
+
+1. The class of all half-lines:
+
+$$
+g(x) = 
+\left\{
+  \begin{array}{ll}
+    1  & \mbox{if } x \geq a \\
+    -1 & \mbox{otherwise }
+  \end{array}
+\right.
+$$
+
+```{r}
+halfline.classify <- function(xs, threshold) {
+  return(ifelse(xs >= threshold, 1, -1))
+}
+
+# Returns all possible ways to classify n points using the half-line classifier
+halfline.sets <- function(n) {
+  # for each n, classify based on 
+  all.sets <- matrix(NA, nrow = n+1, ncol = n)
+  # first set is all are 1
+  # last set is all are -1
+  all.sets[1,] <- rep(1, n)
+  all.sets[nrow(all.sets),] <- rep(-1, n)
+  for (set.idx in 2:n) {
+    current.x = xs[set.idx]
+    all.sets[set.idx,] <- halfline.classify(xs, current.x)
+  }
+  all.sets <- rbind(xs,all.sets)
+  return(all.sets)
+}
+
+halfline.sets <- halfline.sets(n)
+```
+
+*Sets possible with the half-line classifier:*
+
+```{r,echo=FALSE}
+print(halfline.sets)
+# remove the xs
+halfline.sets <- halfline.sets[2:nrow(halfline.sets),]
+```
+
+2. The class of all intervals:
+
+$$
+g(x) = 
+\left\{
+  \begin{array}{ll}
+    1  & \mbox{if } x \geq a \text{ and } x <= b\\
+    -1 & \mbox{otherwise }
+  \end{array}
+\right.
+$$
+
+```{r}
+interval.classify <- function(xs, a, b) {
+  # Not sure if this should be inclusive
+  return(ifelse(xs >= a & xs <= b, 1, -1))
+}
+
+interval.sets <- function(n) {
+  # for each n, classify based on 
+  num.sets <- n*(n+1)/2 + 1
+  all.sets <- matrix(NA, nrow = num.sets, ncol = n)
+  # first set is all are 1
+  # last set is all are -1
+  all.sets[1,] <- rep(1, n)
+  all.sets[nrow(all.sets),] <- rep(-1, n)
+
+  # for each x, create an n intervals that includes x plus n_{i}
+  for (i in 1:length(xs)) {
+    a <- xs[i]
+    for (j in 1:length(xs)) {
+      if (j >= i) {
+        b <- xs[j]
+        all.sets[i+j,] <- interval.classify(xs, a, b)
+      }
+    }
+  }
+  all.sets <- rbind(xs,all.sets)
+  return(all.sets)
+}
+
+interval.sets <- interval.sets(n)
+```
+
+*Sets possible with the interval classifier:*
+
+```{r, echo = FALSE}
+print(interval.sets)
+# remove xs
+interval.sets <- interval.sets[2:nrow(interval.sets),]
+```
+
+### 3. Generate sets of mistakes made by each classifier:
+
+This function is used
+```{r}
+mistake.sets <- function(ys, sets.matrix) {
+  mistakes <- matrix(NA, nrow = nrow(sets.matrix), ncol = ncol(sets.matrix))
+  for (set.idx in 1:nrow(sets.matrix)) {
+    current.set <- sets.matrix[set.idx,]
+    mistakes[set.idx,] <- as.numeric(ys != current.set)
+  }
+  return(mistakes)
+}
+```
+
+Sets of mistakes possible for halfline classifier (given $Y_{n}$):
+
+```{r,echo=FALSE}
+(halfline.mistakes <- mistake.sets(irl.ys, halfline.sets))
+```
+
+Sets of mistakes possible for interval classifier (given $Y_{n}$):
+
+```{r,echo=FALSE}
+(interval.mistakes <- mistake.sets(irl.ys, interval.sets))
+```
+
+### 4. Generate the Rademacher average by simulation
+
+```{r}
+# Generate rademacher averages
+nsims <- 1000
+# for every trial
+# generate n rademacher variables
+# take the max of 1/n*rowsums(rads.trial.i*num.mistakes)
+rad.trials <- matrix(NA, nrow = nsims, ncol = 2)
+colnames(rad.trials) <- c('halfline','interval')
+
+for (s in 1:nsims) {
+  rads.trial.i <- ifelse(rbinom(3, 1, 0.5) == 1, 1, -1)
+  sup.halfline <- max(1/n*apply(halfline.mistakes, 1, function(row) { return(rads.trial.i%*%row) }))
+  sup.interval <- max(1/n*apply(interval.mistakes, 1, function(row) { return(rads.trial.i%*%row) }))
+  rad.trials[s,'halfline'] <- sup.halfline
+  rad.trials[s,'interval'] <- sup.interval
+}
+rad.average.halfline <- mean(rad.trials[,'halfline'])
+rad.average.interval <- mean(rad.trials[,'interval'])
+
+```
+
+```{r, echo = FALSE}
+print(paste('Rademacher average for halflines:',rad.average.halfline))
+print(paste('Rademacher average for intervals:',rad.average.interval))
+
+# Expected deviation of true risk of data-based classifier from the minimal risk of each class is (i.e. Exp[ R(g_n) - R(gbar) ])
+```

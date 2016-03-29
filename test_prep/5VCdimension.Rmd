@@ -8,4 +8,4 @@ output: pdf_document
 
 * Proof VC dimension $V_{\mathcal{A}} \leq r$ where $r$ is a set of feature mappings: *slide 1 - 2*
 * Examples: *slide 3*
-* Structural results of shatter coefficients of these higher-d classes: *slide 4*
+* Structural results of shatter coefficients: *slide 4*

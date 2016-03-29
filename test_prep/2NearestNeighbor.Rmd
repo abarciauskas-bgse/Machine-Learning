@@ -12,14 +12,19 @@ output: pdf_document
 * Risk of Nearest Neighbor: *slide 3*
 * Asymptotic Probability of Error Theorem and Proof: *slide 4*
 * K-Nearest Neighbor Definition and formula for asymptotic risk: *slide 5-6*
-* Theorem of Universal Consistency of $k-NN$: *slide 7*
-* Partitioning Classifier: *slide 7-8*
-* Curse of dimensionality for partitioning classifier: *slide 8*
+    * Theorem of Universal Consistency of $k-NN$: *slide 7*
+* Description of partitioning classifier: *bottom of slide 7-8*
+    * Curse of dimensionality for partitioning classifier: *slide 8*
 
-## Additional / Alternative Definitions
+*Notes*
 
-$\mathbb{I}_{g_{k}(X) = 0, Y = 1} = \mathbb{P}\big\{ Bin(k, \eta(x)) < \frac{k}{2} | X \big\}$
+* The probability that the nearest neighbor "far away" is small when $\epsilon >> \frac{1}{n^{1/d}}$
+    * As dimension increases, the number of points required grows exponentially
+* If the distance to the nearest neighbors is small and $\eta(x)$ smooth and continuous, then the distribution of $Y^{(1)}$ is similar to $Y' \sim \eta(X)$
 
+## Definitions
+
+**(1-sided) Risk of the Nearest Neigbor classifier**: $\mathbb{I}_{g_{k}(X) = 0, Y = 1} = \mathbb{P}\big\{ Bin(k, \eta(x)) < \frac{k}{2} | X \big\}$
 
 ## Nearest Neighbor Theorem
 
@@ -35,9 +40,7 @@ To prove the theorem, we prove the probability that the converse happens goes to
 
 We define "good" points as those with positive probabaility that they fall in $S_{x}(\delta)$ centered at $x$ with radius $\delta$, e.g.: $\forall \delta > 0 \text{, } \mathbb{P}\{S_{x}(\delta)\} > 0$
 
-Since the training points are independent, the probabiltiy that all training points lie outside the $S_{x}(\delta)$ is the probability of each individual training point lies outside $S_{x}(\delta)$, which is the $n-th$ power of the individual probability:
-
-Formally:
+Since the training points are independent, the probabiltiy that all training points lie outside the $S_{x}(\delta)$ is the probability of each individual training point lies outside $S_{x}(\delta)$, which is the n-th power of the individual probability.
 
 $\newline$
 $\mathbb{P}\big\{d(X_{n}'(x), x) > 0\big\} = \mathbb{P}\big\{X_{n}'(x) \notin S_{x}(r) \big\} = \big(1 - \mathbb{P}\{ S_{x}(\delta)\}\big)^{n} \to 0$
@@ -47,5 +50,6 @@ $\mathbb{P}\big\{d(X_{n}'(x), x) > 0\big\} = \mathbb{P}\big\{X_{n}'(x) \notin S_
 
 Depends on distribution (*slide 4a*)
 
-$\newline \mathbb{P}\{Bin(n,\frac{1}{2} = 0 or n\} = 2^{-n} + 2^{-n}, \text{ probability there is not at least one data point in each of two disjoint buckets}$
+$\newline \mathbb{P}\{Bin(n,\frac{1}{2} = 0 \text{ or } n\} = 2^{-n} + 2^{-n}, \text{ probability there is not at least one data point in each of two disjoint buckets}$
 
+$\mathbb{E}R(g_{n}) = 2^{-n} \text{ goes to 0 exponentially fast}$

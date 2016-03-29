@@ -8,21 +8,27 @@ output: pdf_document
 # Misc
 
 * $min(a,b) = \frac{a+b - \left| a - b \right|}{2}$
+* $min(a,b) \leq \sqrt{ab}$
 * $1+x \leq e^{x}$
 * $e^{\lambda x} \leq xe^{\lambda} + (1 - x)$
+* The number of permuations of $k$ objects from a set $n$: $\frac{n!}{(n-k)!}$
+* **Probably Approximately Correct**: $\mathbb{P}\{R(g_{n}) - R^{*} < \epsilon\} \geq 1 - \delta$
 
 # Probabilities
 
+* $\mathbb{P}\{X \in A\} = \mathbb{E}[\mathbb{I}_{X \in A}]$
 * $\mathbb{P}\big\{ Bin(n,p) = k \big\} = {n \choose k}p^{k}(1-p)^{n-k}$
 * **Union of Events Bound**: $\mathbb{P} \big( \bigcup\limits_{j} A_{j} \big) \leq \sum\limits_{j}\mathbb{P}(A_{j})$
 
 # Expected Values
 
+* $\mathbb{E}\mathbb{E}[X|Y] = X$ i.e. a value
 * $\mathbb{E}[X] = \int x f(x) dx, \text{ $X$ admits a pdf $f(x)$}$
 * **Linearity of expectation**: $\mathbb{E}(X) = \frac{1}{n}\sum_{i}^{n} X_{i,n-1}$
     * Linearity of expectation is the property that the expected value of the sum of random variables is equal to the sum of their individual expected values, regardless of if they are independent.
 * **Identically Distributed**: expected value of a random variable is equal to the average of identically distributed random draws: $\frac{1}{n}\sum X_{i} = \mathbb{E} X$
 * $Var(X) = \mathbb{E}\big[ (X-\mathbb{E}[X])^{2} \big]$
+* Independence: $\mathbb{E}[XY] = \mathbb{E}[X]\mathbb{E}[Y]$
 
 # Inequalities
 
@@ -33,9 +39,12 @@ output: pdf_document
 * **Chernoff**: $\mathbb{P}\big\{ X \geq a\big\} \leq \frac{\mathbb{E}[e^{\lambda X}]}{e^{\lambda a}}$
     * When $X$ is a sum of $n$ random variables the RHS $= \frac{\mathbb{E} \Big[ \prod_{i=1}^{n} e^{\lambda X_{i}} \Big]}{e^{\lambda a}}$
 * **Jensen's Inequality**: $\phi(\mathbb{E}[X]) \leq \mathbb{E}[\phi(X)]$
+    * e.g. $e^{\mathbb{E}[X]} \leq \mathbb{E}e^{x}$
     * Used when bounding the expected value of an empirical frequency from it's expectation (Lecture 4, slide 2)
 * *Problem 16 Solution*: $\mathbb{P}\bigg\{X - \mathbb{E}X \geq nx \bigg\} \geq e^{-nx^{2}}$
 * **Cauchy-Schwarz**: $|\big \langle x, y \big \rangle| \leq \|x\| \dot \|y\|$
+* **Sauer's Lemma**: For all $n$: $s(\mathcal{A},n) \leq (n+1)^{V}$
+* By convexity of $e^{\lambda x} \leq xe^{\lambda} + (1-x)$
 
 # VC dimensions and shatter coefficients
 
@@ -43,7 +52,6 @@ output: pdf_document
 
 * $\mathcal{A}$ is a class of sets with VC dimension $V_{\mathcal{A}}$, then for every $n$:
   $s(\mathcal{A},n) \leq \sum\limits_{i=1}^{V_{\mathcal{A}}} {n \choose i}$ (Theorem 13.2)
-
 * For all $n > 2V$, $s(\mathcal{A}, n) \leq \big(\frac{en}{V_{\mathcal{A}}}\big)^{V_{\mathcal{A}}}$
 * If $\mathcal{A}$ contains finitely many sets, then $V_{\mathcal{A}} \leq log_{2}\left| \mathcal{A} \right|$ and $s(\mathcal{A},n) \leq \left| \mathcal{A} \right|$ for every $n$ (Theorem 13.6)
     * Proof: The first inequality follows from the fact that at least $2^{n}$ sets are necessary to shatter $n$ points. The second inequality is trivial.
@@ -54,8 +62,9 @@ output: pdf_document
 * In $\mathcal{R}^{d}$:
     * half-lines: $V_{\mathcal{A}} = d$
     * all rectangles: $V_{\mathcal{A}} = 2d$
-* $\mathcal{A}$ set of halfspaces in $\mathcal{R}^{d}$ of the form $\{x : ax \geq b\}$, $V_{\mathcal{A}} = d+1$ and $s(\mathcal{A},n) = 2\sum\limits_{i=0}^{d} {n-1 \choose i} \leq 2(n-1)^{d} + 2$ (Corollary 13.1)
+* Let $\mathcal{A}$ be the set of halfspaces in $\mathcal{R}^{d}$ of the form $\{x : ax \geq b\}$, $V_{\mathcal{A}} = d+1$ and $s(\mathcal{A},n) = 2\sum\limits_{i=0}^{d} {n-1 \choose i} \leq 2(n-1)^{d} + 2$ (Corollary 13.1)
     * Proof: If we take G to be the linear space spanned by $d$ functions $x^{(d)}$ and the $d+1$ function $= 1$, where $x^{(d)}$ is the d-th component of $x$
+* Linear classifiers: $d+1$
 
 **Theorem 13.9**
 
@@ -73,4 +82,30 @@ In many cases it is possible to get sharper estimates, let $\mathcal{G}$ be the 
 
 $$s(\mathcal{A},n) = 2 \sum\limits_{i=0}^{r-1} {n-1 \choose i}$$
 
+* The class of all convex polygons has infinite VC dimension.
+* The class of all polygons with k vertices in the plane.
+    * Solution: In order to show that the VC-dimension of a class of concepts is d, we need to show that there exists a set of size d on which all dichotomies are realized, and that on all sets of size d + 1, there is some dichotomy that is not realized by the concept class. We know from class that the class of convex polygons with k vertices has VC dimension of 2k + 1. Thus, we know that the VC dimension of our class is at least 2k + 1. It can be shown that for all sets of size 2k + 2 points, there is a labeling of these points that cannot be captured by (even) non-convex polygons with k vertices.
+* The class of all circles in the plane.
+    * Solution: It is clear that any two points can be shattered by a circle. Any three non-colinear points can also be shattered. Now, given any four points, there are two cases. The first, that the convex hull of these four points is a triangle. If so, labelling the points on the triangle as positive and the point inside as negative is a dichotomy that cannot be realized by a circle. If the convex hull of the four points is a quadrilateral, then choosing the further of the two diagonally opposite points as positive and the other two as negative is a dichotomy that cannot be realizeda lso. Finally, if the four points are colinear, there is a trivial dichotomy of alternate positive and negatives that cannot be realized. Thus, VC dimension of all circles in the plane is 3.
+* The class of union of k intervals on the real line.
+    * Solution: Easy to check that a sequence of $2k + 1$ points on a line cannot be shattered, if successive points are labeled with alternate labels, starting with a positive label. Thus, VC dimension of the class of union of k intervals on the real line is 2k.
+* Let $F$ be a finite-dimensional vector space of real functions on $R_{n}$, $dim(F)=r < \infty$. Let $H$ be the set of hypotheses: $H = {{x:f(x) \geq 0} : f \in F}$. Show that $d$, the VC dimension of $H$, is finite and that $d\leq r$ [Hint: select an arbitrary set of $m=r+1$ points and consider the linear mapping $u : F \to R_{m}$ defined by: $u(f)=(f(x_{1}),...,f(x_{m}))$.]
+   * Solution: Show that no set of size $m = r+1$ can be shattered by $H$. Let $x_{1},...,x_{m}$ be $m$ arbitrary points. Define the linear mapping $l : F \to R_{m}$ defined by:
 
+    $l(f) = (f(x_{1}), ... , f(x_{m}))$
+
+    Since the dimesion of $dim(F) = m-1$, the rank of $l$ is at most $m-1$ and there exists $\alpha \in R_{m}$ orthogonal to $l(F)$:
+
+    $\forall f \in F, \sum\limits_{i=1}^{m}\alpha_{i}f(x_{i}) = 0$
+
+    We can assume at least one $\alpha_{i}$ is negative. Then,
+
+    $\forall f \in F, \sum\limits_{i: \alpha_{i} \geq 0}^{m} \alpha_{i}f(x_{i}) = - \sum\limits_{i: \alpha_{i} < 0}^{m} \alpha_{i}f(x_{i})$
+
+    Now, assume that there exists a set ${x : f(x) \geq 0}$ selecting exactly the xis on the left-hand side. Then all the terms on the left-hand side are non-negative, while those on the right-hand side are negative, which cannot be. Thus, $(x_{1}, ... , x_{m})$ cannot be shattered.
+
+
+
+
+
+ 

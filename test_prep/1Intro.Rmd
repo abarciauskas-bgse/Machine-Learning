@@ -9,16 +9,20 @@ output: pdf_document
 # Binary Classification
 
 * Definitions $\mu$ and $\eta$: *slide 4*
-* Definition of $R(g)$, as function of expected loss: *slide 5*
+* Definition of $R(g)$ as function of $g(X)$ and of expected loss: *slide 5*
 * Definition of **Bayes Classifier** $g^{*}(x)$: *slide 5*
-* Bayes Classifier Theorem: *bottom of slide 5*
-* Proof Bayes classifier is optimal: *slide 6*
+    * Bayes Classifier Theorem: *bottom of slide 5*
+    * Proof Bayes classifier is optimal: *slide 6*
 * Definition of **plug-in classifier**: *slide 7*
 * Data-based classifier and it's risk: *slide 8*
 * Consistency, universal and strong: *slide 9*
-* $\bar{R}$: best risk of family, $\hat{R_{n}}$: empirical risk, both being used to bound $R(g_{n})$
 
-# Additional and Alternative Definitions
+*Notes*
+
+* How do we classify? Pick whichever class-conditional density is bigger!
+* When you expand the variance of $R(g) = \mathbb{E}[R(g)-R_{n}(g)]^{2}$, expanding the expected value reveals only terms in $R(g)$ and you find that the variance is small when $R(g)$ is small
+
+# Definitions
 
 $\eta(x) = \frac{\mathbb{P}\{Y=1\}{f_{1}(x)}}{f(x)}, \text{ where $f_{1}(x)$ is the conditional distribution of $x$ given $Y = 1$}$
 
@@ -26,17 +30,43 @@ $f(x|Y=1) = \frac{f(x)\mathbb{P}(Y = 1 | X = x)}{\mathbb{P}(Y=1)}$
 
 $\mathbb{P}\{Y = 1\} = \mathbb{E}[\eta(x)]$
 
+$\mathbb{P}\{X \in A\} = \mathbb{P}\{Y = 1\}f_{1}(x|Y=1) + \mathbb{P}\{Y = 0\}f_{0}(X|Y=0)$
+
+**Risk**
+
+$R(g) = 1 - \mathbb{E}[\mathbb{I}_{g(X)=1}\eta(X)] - \mathbb{E}[\mathbb{I}_{g(X)=0}(1-\eta(X))]$
+
+$R(g_{n}) = \frac{1}{n}Bin(n,R(g))$
+
+$\mathbb{E}[R(g_{n})] = \frac{1}{n}(nR(g)) = R_{g}$
+
+$\bar{R}$: best risk of family
+
+$\hat{R_{n}}$: empirical risk
+
+**Bayes Risk**
+
+$R^{*} = \inf\limits_{g: \mathcal{R}^{d} \to \{0,1\}} \mathbb{P}\big\{ g(X) \ne Y \big\}$
+
+$= \mathbb{E}[min(\eta(x), 1-\eta(x))]$
+
+$= \frac{1}{2} - \frac{1}{2}\mathbb{E}\bigg\{ \left| 2\eta(X) - 1 \right| \bigg\}$
+
+$= \int min(\eta(x), 1-\eta(x)) f(x) dx \text{ if $X$ has density $f(x)$}$
+
+$= \int min((1-p)f_{0}(x), p f_{1}(x)) dx \text{ if $X$ has class-conditional densities $f_{i}(x)$}$
+
+$R^{*} = 0$ when $\eta \in \{0,1\}$ everywhere
+
 # Error Estimation
 
 #### Error-counting estimator:####
 
-(8.1 of Book)
+(8.1) Given, $m$ is the **testing** sequence:
 
-Given, $m$ is the testing sequence:
+$$\hat{L}_{n,m} = \frac{1}{m} \sum\limits_{j=1}^{m} \mathbb{I}_{g_{n}(X_{n+j}) \neq Y_{n+j}}$$
 
-$$\hat{L_{n,m}} = \frac{1}{m} \sum\limits_{j=1}^{m} \mathbb{1}_{g_{n}(X_{n+j}) \neq Y_{n+j}}$$
+Clearly unbiased: $\mathbb{E} \big\{ \hat{L}_{n,m} | D_{n} \big\} = L_{n}$
 
-Clearly unbiased: $\mathbb{E} \big\{ \hat{L_{n,m}} \| D_{n} \big\} = L_{n}$
-
-The conditional distribution of $\hat{L_{n,m}}$ given $D_{n}$ is binomial with paramters $m$ and $L_{n}$
+**The conditional distribution of $\hat{L}_{n,m}$ given $D_{n}$ is binomial with paramters $m$ and $L_{n}$**
 

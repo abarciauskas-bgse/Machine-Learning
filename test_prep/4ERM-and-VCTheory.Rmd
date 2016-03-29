@@ -6,8 +6,8 @@ date: 29 March 2016
 output: pdf_document
 ---
 
-* Inequalities of bounds on the true risk of a data-based classifier: *slide 1*
-* Behavior of **maximal deviations of empirical frequencies from their expectations: *slide 2*
+* Fundamental inequalities: *slide 1*
+* General description of how we study **maximal deviations of empirical frequencies from their expectations**: *slide 2*
 * Infinite classes and symmetrization by ghost sample: *slide 3*
 * Definition of the shatter coefficient: *slide 4*
     * **The shatter coefficient of a class $\mathcal{C}$ is the number of possible ways n data points can be classified in $\mathcal{C}$**
@@ -15,4 +15,5 @@ output: pdf_document
 * Bounding the rademacher average using the shater coefficient: *slide 4*
 * Applications of bounds for empirical risk minimization with example in half-lines and intervals: *slide 5*
 * Definition of VC dimension: *slide 6*
+* Sauer's Lemma (bound on shatter coefficient using VC dimension): *slide 6*
 * Examples of shatter coefficients and VC dimensions: *slide 7*
